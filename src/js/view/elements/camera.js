@@ -1,22 +1,16 @@
 import * as THREE from 'three'
 
-export default class Camera {
+export default class Camera extends THREE.OrthographicCamera {
     constructor(size) {
-        if (!this.instance) {
-            this.instance = this
-            
-            this.fov = 75
-            this.o = new THREE.PerspectiveCamera(
-                this.fov,
-                size.width / size.height
-            )
-        } else {
-            return this.instance
-        }
+        super(- size.ratio, size.ratio, 1, -1)
+        this.position.z = 1
+        this.zoom = 0.05
+        this.updateProjectionMatrix()
     }
 
     update(size) {
-        this.o.aspect = size.width / size.height
-        this.o.updateProjectionMatrix()
+        this.left = - size.ratio
+        this.right = size.ratio
+        this.updateProjectionMatrix()
     }
 }

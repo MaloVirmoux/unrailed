@@ -12,5 +12,6 @@ export default class Size {
     update() {
         this.width = window.innerWidth
         this.height = window.innerHeight
+        this.ratio = window.innerWidth / window.innerHeight 
     }
 }
