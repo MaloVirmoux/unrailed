@@ -1,37 +1,40 @@
-function generatePath(y) {
+function generatePath(currentY) {
     path = new Array(128).fill(null).map(()=>new Array(32).fill('.'))
 
-    var x = 0
-    while (x < 127) {
-        var rdmX = rdm(3)
-        var oldX = x
-        x += (x + (rdmX * 32) < 127) ?
-            Math.round(rdmX * 32)
-        :
-            127 - x
-        for (let i = oldX; i < x; i++) {
-            path[i][y] = 'X'
+    var currentX = 0
+    while (currentX < 128) {
+        var changeX = Math.min(Math.round(rdm(3) * 32), 127 - currentX)
+        var toX = currentX + changeX
+        for (currentX; currentX <= toX; currentX++) {
+            for (let y = 0; y < 32; y++) {
+                if (y < currentY) {
+                    path[currentX][y] = 'S'
+                } else if(y == currentY) {
+                    path[currentX][y] = 'T'
+                } else if (y > currentY) {
+                    path[currentX][y] = 'N'
+                }
+            }
         }
         
-        var rdmY = rdm(2) - 0.5
-        var oldY = y
-        y += (rdmY < 0) ?
-        Math.round(rdmY * y)
-        :
-        Math.round(rdmY * (31 - y))
-        if (y > oldY) {
-            for (let i = oldY; i < y; i++) {
-                path[x][i] = 'X'
+        if (currentX != 128) {
+            var changeY = Math.round((rdm(2) - 0.5) * currentY)
+            changeY = changeY < 0 ? Math.max(changeY, - currentY) : Math.min(changeY, 31 - currentY)
+            minY = Math.min(currentY, currentY + changeY)
+            maxY = Math.max(currentY, currentY + changeY)
+            for (let y = 0; y < 32; y++) {
+                if (y < minY) {
+                    path[currentX][y] = 'S'
+                } else if(y >= minY && y <= maxY) {
+                    path[currentX][y] = 'T'
+                } else if (y > maxY) {
+                    path[currentX][y] = 'N'
+                }
             }
-        } else if (y < oldY) {
-            for (let i = oldY; i > y; i--) {
-                path[x][i] = 'X'
-            }
-        } else {
-            path[x][y] = 'X'
+            currentX += 1
+            currentY += changeY
         }
     }
-
     return path
 }
 
@@ -52,7 +55,7 @@ function printPath(path) {
     }
 }
 
-var path = generatePath(2)
+var path = generatePath(15)
 printPath(path)
 
 //export default {generatePath}

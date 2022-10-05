@@ -1,6 +1,6 @@
 import './style.css'
 
-import Experience from './js/view/experience.js'
+import Experience from './js/experience'
 
 const e = new Experience()
 e.start() 
