@@ -18,7 +18,7 @@ function generatePath(currentY) {
         }
         
         if (currentX != 128) {
-            var changeY = Math.round((rdm(2) - 0.5) * currentY)
+            var changeY = Math.round((rdm(2) - 0.5) * 32)
             changeY = changeY < 0 ? Math.max(changeY, - currentY) : Math.min(changeY, 31 - currentY)
             minY = Math.min(currentY, currentY + changeY)
             maxY = Math.max(currentY, currentY + changeY)
