@@ -1,6 +1,16 @@
 {
-    "map" : {
+    "map": {
         "length": 128,
         "width": 32
+    },
+    "plains": {
+        "moutainGenerator": {
+            "frequency": 40,
+            "limit": 0.7
+        },
+        "ressourcesGenerator": {
+            "frequency": 30,
+            "limit": 0.3
+        }
     }
 }

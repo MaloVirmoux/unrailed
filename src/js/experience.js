@@ -1,10 +1,8 @@
-import * as THREE from 'three'
-
-import Size from './elements/size'
-import Scene from './elements/scene'
-import Camera from './elements/camera'
-import Renderer from './elements/renderer'
-import Chunk from './map/chunk'
+import Size from './elements/setup/Size.js'
+import Scene from './elements/setup/Scene.js'
+import Camera from './elements/setup/Camera.js'
+import Renderer from './elements/setup/Renderer.js'
+import Chunk from './elements/object/Chunk.js'
 
 export default class Experience {
     constructor() {

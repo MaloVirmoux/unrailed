@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import Utils from '../utils'
 
-import Block from './block'
+import utils from '../../utils.js'
+import Block from './Block.js'
 
 export default class Column extends THREE.Group {
     constructor() {

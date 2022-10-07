@@ -1,5 +1,6 @@
 import * as THREE from 'three'
-import Utils from '../utils'
+
+import utils from '../../utils.js'
 
 export default class Block extends THREE.Mesh {
     constructor() {

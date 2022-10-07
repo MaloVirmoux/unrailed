@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import Utils from '../utils'
 
-import Column from './column'
+import utils from '../../utils.js'
+import Column from './Column.js'
 
 export default class Chunk extends THREE.Group {
     constructor() {
