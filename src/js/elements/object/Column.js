@@ -1,14 +1,19 @@
+import Params from '../../Params.js'
+
 import * as THREE from 'three'
 
-import utils from '../../utils.js'
+import Utils from '../../Utils.js'
 import Block from './Block.js'
 
 export default class Column extends THREE.Group {
     constructor() {
         super()
-        this.height = 16
+        this.params = new Params()
+        this.height = this.params.map.width
         this.createBlocks()
-        Utils.centerPosition(this)
+
+        this.utils = new Utils()
+        this.utils.centerPosition(this)
     }
     
     createBlocks() {

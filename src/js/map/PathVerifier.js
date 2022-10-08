@@ -10,7 +10,6 @@ export default class PathVerifier {
         while(maxX != chunk.length - 1 && this.toVisit.length != 0) {
             const v = this.toVisit.pop()
             this.visited.push(v)
-            // console.log('Visiting : ' + v.x + ';' + v.y)
             if(chunk[v.x][v.y] != 'M') {
                 this.createNeighbours(v.x, v.y)
                 // chunk[v.x][v.y] = '.'
@@ -47,6 +46,4 @@ export default class PathVerifier {
             }
         }
     }
-
-    //return !(visited.find(t => (t.x == tile.x && t.y == tile.y)))
 }

@@ -1,17 +1,38 @@
-import params from "../params.json" assert {type: 'json'}
+import Params from '../Params.js'
 
 import MountainGenerator from './MountainGenerator.js'
+import LakeGenerator from './LakeGenerator.js'
+import RiverGenerator from './RiverGenerator.js'
 import RessourcesGenerator from './RessourcesGenerator.js'
 
 export default class PlainGenerator {
     constructor() {
-        this.mountainGenerator = new MountainGenerator(params.plains.moutainGenerator.frequency, params.plains.moutainGenerator.limit)
-        this.ressourcesGenerator = new RessourcesGenerator(params.plains.ressourcesGenerator.frequency, params.plains.ressourcesGenerator.limit)
+        this.params = new Params()
+        this.mountainGenerator = new MountainGenerator(
+            this.params.plains.moutainGenerator.frequency,
+            this.params.plains.moutainGenerator.limit
+        )
+        this.lakeGenerator = new LakeGenerator(
+            this.params.plains.lakeGenerator.frequency,
+            this.params.plains.lakeGenerator.limit
+        )
+        this.riverGenerator = new RiverGenerator(
+            this.params.plains.riverGenerator.frequency,
+            this.params.plains.riverGenerator.limit
+        )
+        this.ressourcesGenerator = new RessourcesGenerator(
+            this.params.plains.ressourcesGenerator.frequency,
+            this.params.plains.ressourcesGenerator.limit
+        )
     }
 
     get(x, y) {
-        if(this.mountainGenerator.get(x, y)) {
-            return 'M'
+        if(this.riverGenerator.get(x,y)) {
+            return 'O'
+        } else if(this.mountainGenerator.get(x, y)) {
+            return 'X'
+        } else if (this.lakeGenerator.get(x, y)) {
+            return 'O'
         } else {
             return this.ressourcesGenerator.get(x, y)
         }

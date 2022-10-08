@@ -1,11 +1,13 @@
-import params from "../params.json" assert {type: 'json'}
-import PlainGenerator from "../generator/PlainGenerator.js"
-import PathVerifier from "./PathVerifier.js"
+import Params from '../Params.js'
+
+import PlainGenerator from '../generator/PlainGenerator.js'
+import PathVerifier from './PathVerifier.js'
 
 export default class Map {
     constructor() {
-        this.length = params.map.length
-        this.width = params.map.width
+        this.params = new Params()
+        this.length = this.params.map.length
+        this.width = this.params.map.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
         this.map = []

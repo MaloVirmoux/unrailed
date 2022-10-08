@@ -1,7 +1,15 @@
 import * as THREE from 'three'
 
-function centerPosition(obj) {
-    new THREE.Box3().setFromObject(obj).getCenter(obj.position).multiplyScalar(-1)
-}
+export default class Utils {
+    constructor() {
+        if (!this.instance) {
+            this.instance = this
+        } else {
+            return this.instance
+        }
+    }
 
-export default {centerPosition}
+    centerPosition(obj) {
+        new THREE.Box3().setFromObject(obj).getCenter(obj.position).multiplyScalar(-1)
+    }
+}
