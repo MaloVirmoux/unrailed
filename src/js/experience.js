@@ -10,10 +10,13 @@ export default class Experience {
         this.scene = new Scene()
         this.camera = new Camera(this.size)
         this.renderer = new Renderer(this.size)
-        this.createListener()
-
         this.scene.add(this.camera)
-        this.scene.add(new Chunk())
+        
+        this.createListener()
+    }
+
+    createChunk(chunk) {
+        this.scene.add(new Chunk(chunk))
     }
 
     createListener(){
@@ -26,7 +29,6 @@ export default class Experience {
     
     start() {
         this.tick()
-        console.log(this.scene)
     }
     
     tick() {

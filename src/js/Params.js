@@ -3,10 +3,11 @@ export default class Params {
         if (!this.instance) {
             this.instance = this
             
-            this.map = {
+            this.chunk = {
                 "length": 128,
                 "width": 32
             }
+            
             this.plains = {
                 "moutainGenerator": {
                     "frequency": 40,

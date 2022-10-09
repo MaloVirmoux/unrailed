@@ -6,8 +6,8 @@ import PathVerifier from './PathVerifier.js'
 export default class Map {
     constructor() {
         this.params = new Params()
-        this.length = this.params.map.length
-        this.width = this.params.map.width
+        this.length = this.params.chunk.length
+        this.width = this.params.chunk.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
         this.map = []
@@ -26,6 +26,7 @@ export default class Map {
             this.plainGenerator.changeMountains()
             this.generateNewChunk()
         }
+        return chunk
     }
 
     printMap() {

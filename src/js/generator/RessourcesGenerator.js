@@ -12,11 +12,11 @@ export default class RessourcesGenerator {
         const wood = this.woodGenerator(x / this.frequency, y / this.frequency)
         const stone = this.stoneGenerator(x / this.frequency, y / this.frequency)
         if (wood >= stone & wood > this.limit) {
-            return '°'
+            return 'wood'
         } else if (stone > wood & stone > this.limit) {
-            return '*'
+            return 'stone'
         } else {
-            return ' '
+            return 'null'
         }
     }
 }

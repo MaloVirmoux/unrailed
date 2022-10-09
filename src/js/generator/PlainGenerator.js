@@ -28,11 +28,11 @@ export default class PlainGenerator {
 
     get(x, y) {
         if(this.riverGenerator.get(x,y)) {
-            return 'O'
+            return 'water'
         } else if(this.mountainGenerator.get(x, y)) {
-            return 'X'
+            return 'moutain'
         } else if (this.lakeGenerator.get(x, y)) {
-            return 'O'
+            return 'water'
         } else {
             return this.ressourcesGenerator.get(x, y)
         }

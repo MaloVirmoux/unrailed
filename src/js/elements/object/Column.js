@@ -6,10 +6,12 @@ import Utils from '../../Utils.js'
 import Block from './Block.js'
 
 export default class Column extends THREE.Group {
-    constructor() {
+    constructor(map) {
         super()
         this.params = new Params()
-        this.height = this.params.map.width
+        this.height = this.params.chunk.width
+        this.map = map
+
         this.createBlocks()
 
         this.utils = new Utils()
@@ -17,9 +19,9 @@ export default class Column extends THREE.Group {
     }
     
     createBlocks() {
-        for (let i = 0; i < this.height; i++) {
-            const b = new Block()
-            b.position.y = i
+        for (let y = 0; y < this.height; y++) {
+            const b = new Block(this.map[y])
+            b.position.y = y
             this.add(b)
         }
     }
