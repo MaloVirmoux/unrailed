@@ -7,22 +7,21 @@ import RessourcesGenerator from './RessourcesGenerator.js'
 
 export default class PlainGenerator {
     constructor() {
-        this.params = new Params()
         this.mountainGenerator = new MountainGenerator(
-            this.params.plains.moutainGenerator.frequency,
-            this.params.plains.moutainGenerator.limit
+            Params.plains.moutainGenerator.frequency,
+            Params.plains.moutainGenerator.limit
         )
         this.lakeGenerator = new LakeGenerator(
-            this.params.plains.lakeGenerator.frequency,
-            this.params.plains.lakeGenerator.limit
+            Params.plains.lakeGenerator.frequency,
+            Params.plains.lakeGenerator.limit
         )
         this.riverGenerator = new RiverGenerator(
-            this.params.plains.riverGenerator.frequency,
-            this.params.plains.riverGenerator.limit
+            Params.plains.riverGenerator.frequency,
+            Params.plains.riverGenerator.limit
         )
         this.ressourcesGenerator = new RessourcesGenerator(
-            this.params.plains.ressourcesGenerator.frequency,
-            this.params.plains.ressourcesGenerator.limit
+            Params.plains.ressourcesGenerator.frequency,
+            Params.plains.ressourcesGenerator.limit
         )
     }
 

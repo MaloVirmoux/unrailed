@@ -5,9 +5,8 @@ import PathVerifier from './PathVerifier.js'
 
 export default class Map {
     constructor() {
-        this.params = new Params()
-        this.length = this.params.chunk.length
-        this.width = this.params.chunk.width
+        this.length = Params.chunk.length
+        this.width = Params.chunk.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
         this.map = []

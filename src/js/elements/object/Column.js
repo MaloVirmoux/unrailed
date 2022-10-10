@@ -1,15 +1,14 @@
-import Params from '../../Params.js'
-
 import * as THREE from 'three'
 
+import Params from '../../Params.js'
 import Utils from '../../Utils.js'
+
 import Block from './Block.js'
 
 export default class Column extends THREE.Group {
     constructor(map) {
         super()
-        this.params = new Params()
-        this.height = this.params.chunk.width
+        this.height = Params.chunk.width
         this.map = map
 
         this.createBlocks()

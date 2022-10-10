@@ -1,15 +1,14 @@
-import Params from '../../Params.js'
-
 import * as THREE from 'three'
 
 import Utils from '../../Utils.js'
+import Params from '../../Params.js'
+
 import Column from './Column.js'
 
 export default class Chunk extends THREE.Group {
     constructor(chunk) {
         super()
-        this.params = new Params()
-        this.length = this.params.chunk.length
+        this.length = Params.chunk.length
         this.chunk = chunk
 
         this.createColumns()
