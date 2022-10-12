@@ -1,6 +1,8 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require("terser-webpack-plugin");
+
 const path = require('path')
 
 module.exports = {
@@ -9,9 +11,9 @@ module.exports = {
     {
         hashFunction: 'xxhash64',
         filename: 'bundle.[contenthash].js',
-        path: path.resolve(__dirname, '../dist')
+        path: path.resolve(__dirname, '../build')
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
     plugins:
     [
         new CopyWebpackPlugin({
@@ -78,5 +80,18 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            extractComments: false,
+            terserOptions: {
+              format: {
+                comments: false,
+              },
+            },
+          }),
+        ],
+      },
 }

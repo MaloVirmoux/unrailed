@@ -21,4 +21,4 @@ Run the command `npm install` in the project directory
 ## To build
 
 Run the command `npm run build` in the project directory
-The final files will appear in the `/dist/` folder
+The final files will appear in the `/build/` folder
