@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Utils from '../../Utils.js'
+import {centerPosition} from '../../utils'
 
 export default class Wireframe extends THREE.LineSegments {
     constructor(obj) {
@@ -13,7 +13,6 @@ export default class Wireframe extends THREE.LineSegments {
             })
         )
 
-        this.utils = new Utils()
-        this.utils.centerPosition(this)
+        centerPosition(this)
     }
 }

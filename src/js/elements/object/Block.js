@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 
-import Utils from '../../Utils.js'
-import Params from '../../Params.js'
+import {debug} from '../../params'
+import {centerPosition} from '../../utils'
 
-import Wireframe from './Wireframe.js'
+import Wireframe from './Wireframe'
 
 export default class Block extends THREE.Mesh {
-    constructor(type) {
+    constructor(block) {
         const colors = {
             'moutain': '#1B1D22',
             'water': '#1E3F66',
@@ -17,18 +17,15 @@ export default class Block extends THREE.Mesh {
         super(
             new THREE.BoxGeometry(),
             new THREE.MeshBasicMaterial({
-                color: colors[type],
+                color: colors[block],
                 polygonOffset: true,
                 polygonOffsetFactor: 1,
                 polygonOffsetUnits: 1
             })
         )
 
-        this.utils = new Utils()
-        this.utils.centerPosition(this)
+        centerPosition(this)
 
-        if(Params.debug) {
-            this.add(new Wireframe(this))
-        }
+        debug ? this.add(new Wireframe(this)) : null
     }
 }

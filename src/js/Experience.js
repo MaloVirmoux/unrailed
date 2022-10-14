@@ -1,8 +1,8 @@
-import Size from './elements/setup/Size.js'
-import Scene from './elements/setup/Scene.js'
-import Camera from './elements/setup/Camera.js'
-import Renderer from './elements/setup/Renderer.js'
-import Chunk from './elements/object/Chunk.js'
+import Size from './elements/setup/Size'
+import Scene from './elements/setup/Scene'
+import Camera from './elements/setup/Camera'
+import Renderer from './elements/setup/Renderer'
+import Chunk from './elements/object/Chunk'
 
 export default class Experience {
     constructor() {

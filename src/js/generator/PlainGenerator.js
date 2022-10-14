@@ -1,27 +1,27 @@
-import Params from '../Params.js'
+import {plains} from '../params'
 
-import MountainGenerator from './MountainGenerator.js'
-import LakeGenerator from './LakeGenerator.js'
-import RiverGenerator from './RiverGenerator.js'
-import RessourcesGenerator from './RessourcesGenerator.js'
+import MountainGenerator from './MountainGenerator'
+import LakeGenerator from './LakeGenerator'
+import RiverGenerator from './RiverGenerator'
+import RessourcesGenerator from './RessourcesGenerator'
 
 export default class PlainGenerator {
     constructor() {
         this.mountainGenerator = new MountainGenerator(
-            Params.plains.moutainGenerator.frequency,
-            Params.plains.moutainGenerator.limit
+            plains.moutainGenerator.frequency,
+            plains.moutainGenerator.limit
         )
         this.lakeGenerator = new LakeGenerator(
-            Params.plains.lakeGenerator.frequency,
-            Params.plains.lakeGenerator.limit
+            plains.lakeGenerator.frequency,
+            plains.lakeGenerator.limit
         )
         this.riverGenerator = new RiverGenerator(
-            Params.plains.riverGenerator.frequency,
-            Params.plains.riverGenerator.limit
+            plains.riverGenerator.frequency,
+            plains.riverGenerator.limit
         )
         this.ressourcesGenerator = new RessourcesGenerator(
-            Params.plains.ressourcesGenerator.frequency,
-            Params.plains.ressourcesGenerator.limit
+            plains.ressourcesGenerator.frequency,
+            plains.ressourcesGenerator.limit
         )
     }
 

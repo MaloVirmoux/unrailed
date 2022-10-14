@@ -1,12 +1,12 @@
-import Params from '../Params.js'
+import {map} from '../params'
 
-import PlainGenerator from '../generator/PlainGenerator.js'
-import PathVerifier from './PathVerifier.js'
+import PlainGenerator from '../generator/PlainGenerator'
+import PathVerifier from './PathVerifier'
 
 export default class Map {
     constructor() {
-        this.length = Params.chunk.length
-        this.width = Params.chunk.width
+        this.length = map.length
+        this.width = map.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
         this.map = []

@@ -1,11 +1,10 @@
 import './style.css'
 
-import Experience from './js/Experience.js'
-import Map from './js/map/Map.js'
+import Experience from './js/Experience'
+import Map from './js/map/Map'
 
 const e = new Experience()
 const map = new Map()
-map.generateNewChunk()
 e.createChunk(map.generateNewChunk())
 e.start() 
 

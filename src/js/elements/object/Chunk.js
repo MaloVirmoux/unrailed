@@ -1,20 +1,19 @@
 import * as THREE from 'three'
 
-import Utils from '../../Utils.js'
-import Params from '../../Params.js'
+import {map} from '../../params'
+import {centerPosition} from '../../utils'
 
-import Column from './Column.js'
+import Column from './Column'
 
 export default class Chunk extends THREE.Group {
     constructor(chunk) {
         super()
-        this.length = Params.chunk.length
+        this.length = map.length
         this.chunk = chunk
 
         this.createColumns()
 
-        this.utils = new Utils()
-        this.utils.centerPosition(this)
+        centerPosition(this)
     }
     
     createColumns() {

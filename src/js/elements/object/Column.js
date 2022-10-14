@@ -1,25 +1,24 @@
 import * as THREE from 'three'
 
-import Params from '../../Params.js'
-import Utils from '../../Utils.js'
+import {map} from '../../params'
+import {centerPosition} from '../../utils'
 
-import Block from './Block.js'
+import Block from './Block'
 
 export default class Column extends THREE.Group {
-    constructor(map) {
+    constructor(column) {
         super()
-        this.height = Params.chunk.width
-        this.map = map
+        this.height = map.width
+        this.column = column
 
         this.createBlocks()
 
-        this.utils = new Utils()
-        this.utils.centerPosition(this)
+        centerPosition(this)
     }
     
     createBlocks() {
         for (let y = 0; y < this.height; y++) {
-            const b = new Block(this.map[y])
+            const b = new Block(this.column[y])
             b.position.y = y
             this.add(b)
         }
