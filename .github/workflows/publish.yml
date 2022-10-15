@@ -13,6 +13,11 @@ jobs:
     - name: 📚 Get latest code
       uses: actions/checkout@v3
 
+    - name: ♻ Use latest version of Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: latest
+
     - name: 🛠️ Build the website
       run: |
         npm install
