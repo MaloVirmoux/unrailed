@@ -25,30 +25,11 @@ const plains = {
 }
 
 const colors = {
-    'moutain': {
-        'r': 27,
-        'g': 29,
-        'b': 34
-    },
-    'water': {
-        'r': 30,
-        'g': 63,
-        'b': 102
-    },
-    'wood': {
-        'r': 126,
-        'g': 137,
-        'b': 61
-    },
-    'stone': {
-        'r': 183,
-        'g': 176,
-        'b': 156
-    },
-    'default': {
-        'r': 86,
-        'g': 125,
-        'b': 70
-    },
+    'moutain': [27, 29, 34, '1B1D22'],
+    'water': [30, 63, 102, '1E3F66'],
+    'wood': [126, 137, 61, '7E893D'],
+    'stone': [183, 176, 156, 'B7B09C'],
+    'default': [86, 125, 70, '567D46']
 }
+
 export {debug, chunk, plains, colors}

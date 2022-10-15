@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import {debug} from '../../params'
+import { debug } from '../../params'
 
 export default class Scene extends THREE.Scene {
     constructor() {

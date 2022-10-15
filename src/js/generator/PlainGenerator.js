@@ -1,4 +1,4 @@
-import {plains} from '../params'
+import { plains } from '../params'
 
 import MountainGenerator from './MountainGenerator'
 import LakeGenerator from './LakeGenerator'

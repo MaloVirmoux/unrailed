@@ -1,4 +1,4 @@
-import {chunk} from '../params'
+import { chunk } from '../params'
 
 import PlainGenerator from '../generator/PlainGenerator'
 import PathVerifier from './PathVerifier'
