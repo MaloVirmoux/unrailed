@@ -1,22 +1,22 @@
 export default class PathVerifier {
     constructor() {}
 
-    verify(chunk, startY) {
+    verify(map, startY) {
         this.toVisit = []
         this.visited = []
         var maxX = 0
         this.toVisit.push({'x': 0, 'y': startY})
         
-        while(maxX != chunk.length - 1 && this.toVisit.length != 0) {
+        while(maxX != map.length - 1 && this.toVisit.length != 0) {
             const v = this.toVisit.pop()
             this.visited.push(v)
-            if(chunk[v.x][v.y] != 'M') {
+            if(map[v.x][v.y] != 'M') {
                 this.createNeighbours(v.x, v.y)
-                // chunk[v.x][v.y] = '.'
+                // map[v.x][v.y] = '.'
             }
             maxX = Math.max(maxX, v.x)
         }
-        if (maxX == chunk.length - 1) {
+        if (maxX == map.length - 1) {
             return true
         } else if (this.toVisit.length == 0){
             return false

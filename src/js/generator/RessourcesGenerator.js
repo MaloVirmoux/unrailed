@@ -16,7 +16,7 @@ export default class RessourcesGenerator {
         } else if (stone > wood & stone > this.limit) {
             return 'stone'
         } else {
-            return 'null'
+            return 'default'
         }
     }
 }

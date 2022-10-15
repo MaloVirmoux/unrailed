@@ -1,38 +1,37 @@
-import {map} from '../params'
+import {chunk} from '../params'
 
 import PlainGenerator from '../generator/PlainGenerator'
 import PathVerifier from './PathVerifier'
 
 export default class Map {
     constructor() {
-        this.length = map.length
-        this.width = map.width
+        this.length = chunk.length
+        this.width = chunk.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
-        this.map = []
+        this.mapsList = []
     }
 
-    generateNewChunk() {
-        const chunk = new Array(this.length).fill(null).map(()=>new Array(this.width).fill(null))
-        chunk.forEach((column, x) => {
+    generateNewMap() {
+        const map = new Array(this.length).fill(null).map(()=>new Array(this.width).fill(null))
+        map.forEach((column, x) => {
             column.forEach((block, y) => {
-                chunk[x][y] = this.plainGenerator.get(x, y)
+                map[x][y] = this.plainGenerator.get(x, y)
             })
         })
-        if(this.pathVerifier.verify(chunk, 15)) {
-            this.map.push(chunk)
+        if(this.pathVerifier.verify(map, 15)) {
+            this.mapsList.push(map)
         } else {
             this.plainGenerator.changeMountains()
-            this.generateNewChunk()
+            this.generateNewMap()
         }
-        return chunk
+        return map
     }
 
-    printMap() {
-        const chunk = this.map[0]
-        for (let x = 0; x < chunk.length; x++) {
-            for (let y = 0; y < chunk[x].length; y++) {
-                process.stdout.write(chunk[x][y])
+    printMap(map) {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
+                process.stdout.write(map[x][y])
             }
             console.log('')
         }

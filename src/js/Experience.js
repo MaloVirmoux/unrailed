@@ -15,8 +15,8 @@ export default class Experience {
         this.createListener()
     }
 
-    createChunk(chunk) {
-        this.scene.add(new Chunk(chunk))
+    createChunk(map) {
+        this.scene.add(new Chunk(map))
     }
 
     createListener(){
