@@ -8,7 +8,7 @@ export default class RiverGenerator {
     }
 
     get(x, y) {
-        const value = this.generator(x / this.frequency, y / this.frequency)
+        const value = this.generator((x + 1) / this.frequency, (y + 1) / this.frequency)
         return (value > - this.limit) & (value < this.limit)
     }
 }

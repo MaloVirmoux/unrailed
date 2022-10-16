@@ -22,11 +22,11 @@ export default class Ground extends THREE.Mesh {
         const vertices = []
         const blockType = map[x][y]
         const z = blockType == 'water' ? 0.8 : 1
-        const vertice = {
+
+        const top = {
+            'normal': [0, 0, 1],
             'color': [colors[blockType][0] / 255, colors[blockType][1] / 255, colors[blockType][2] / 255]
         }
-
-        const top = { 'normal': [0, 0, 1], ...vertice }
         vertices.push(
             {'position': [x    , y    , z], ...top},
             {'position': [x + 1, y    , z], ...top},
@@ -37,7 +37,10 @@ export default class Ground extends THREE.Mesh {
         )
         
         if (x == 0) {
-            const leftSide = { 'normal': [- 1, 0, 0], ...vertice }
+            const leftSide = {
+                'normal': [-1, 0, 0],
+                'color': [colors[blockType][0] / (255 * 2), colors[blockType][1] / (255 * 2), colors[blockType][2] / (255 * 2)]
+            }
             vertices.push(
                 {'position': [x, y    , 0], ...leftSide},
                 {'position': [x, y    , z], ...leftSide},
@@ -49,7 +52,10 @@ export default class Ground extends THREE.Mesh {
         }
 
         if (y == 0) {
-            const frontSide = { 'normal': [0, -1, 0], ...vertice }
+            const frontSide = {
+                'normal': [0, -1, 0],
+                'color': [colors[blockType][0] / (255 * 1.5), colors[blockType][1] / (255 * 1.5), colors[blockType][2] / (255 * 1.5)]
+            }
             vertices.push(
                 {'position': [x    , y, 0], ...frontSide},
                 {'position': [x + 1, y, 0], ...frontSide},
@@ -88,6 +94,92 @@ export default class Ground extends THREE.Mesh {
                 {'position': [x + 1, y + 1, z], ...backWaterSide},
                 {'position': [x + 1, y + 1, 1], ...backWaterSide}
             )
+        }
+
+        if (blockType == 'moutain') {
+            if (x == 0 || x == chunk.length - 1 || y == 0 || y == chunk.width - 1 || map[x - 1][y] != 'moutain' || map[x + 1][y] != 'moutain' || map[x][y - 1] != 'moutain' || map[x][y + 1] != 'moutain') {
+                const moutainZ = 1.5 + Math.random()
+
+                const moutainTop = {
+                    'normal': [0, 0, 1],
+                    'color': [colors[blockType][0] / 255, colors[blockType][1] / 255, colors[blockType][2] / 255]
+                }
+                vertices.push(
+                    {'position': [x    , y    , moutainZ], ...moutainTop},
+                    {'position': [x + 1, y    , moutainZ], ...moutainTop},
+                    {'position': [x    , y + 1, moutainZ], ...moutainTop},
+                    {'position': [x    , y + 1, moutainZ], ...moutainTop},
+                    {'position': [x + 1, y    , moutainZ], ...moutainTop},
+                    {'position': [x + 1, y + 1, moutainZ], ...moutainTop}
+                )
+
+                const moutainLeft = {
+                    'normal': [-1, 0, 0],
+                    'color': [colors[blockType][0] / (255 * 2), colors[blockType][1] / (255 * 2), colors[blockType][2] / (255 * 2)]
+                }
+                vertices.push(
+                    {'position': [x, y + 1, 1       ], ...moutainLeft},
+                    {'position': [x, y    , 1       ], ...moutainLeft},
+                    {'position': [x, y + 1, moutainZ], ...moutainLeft},
+                    {'position': [x, y + 1, moutainZ], ...moutainLeft},
+                    {'position': [x, y    , 1       ], ...moutainLeft},
+                    {'position': [x, y    , moutainZ], ...moutainLeft}
+                )
+
+                const moutainFront = {
+                    'normal': [0, -1, 0],
+                    'color': [colors[blockType][0] / (255 * 1.5), colors[blockType][1] / (255 * 1.5), colors[blockType][2] / (255 * 1.5)]
+                }
+                vertices.push(
+                    {'position': [x    , y, 1       ], ...moutainFront},
+                    {'position': [x + 1, y, 1       ], ...moutainFront},
+                    {'position': [x    , y, moutainZ], ...moutainFront},
+                    {'position': [x    , y, moutainZ], ...moutainFront},
+                    {'position': [x + 1, y, 1       ], ...moutainFront},
+                    {'position': [x + 1, y, moutainZ], ...moutainFront}
+                )
+            } else {
+                const moutainZ = 2 + (Math.random() * 2)
+
+                const moutainTop = {
+                    'normal': [0, 0, 1],
+                    'color': [colors[blockType][0] / 255, colors[blockType][1] / 255, colors[blockType][2] / 255]
+                }
+                vertices.push(
+                    {'position': [x    , y    , moutainZ], ...moutainTop},
+                    {'position': [x + 1, y    , moutainZ], ...moutainTop},
+                    {'position': [x    , y + 1, moutainZ], ...moutainTop},
+                    {'position': [x    , y + 1, moutainZ], ...moutainTop},
+                    {'position': [x + 1, y    , moutainZ], ...moutainTop},
+                    {'position': [x + 1, y + 1, moutainZ], ...moutainTop}
+                )
+
+                const moutainLeft = {
+                    'normal': [-1, 0, 0],
+                    'color': [colors[blockType][0] / (255 * 2), colors[blockType][1] / (255 * 2), colors[blockType][2] / (255 * 2)]
+                }
+                vertices.push(
+                    {'position': [x, y + 1, 1       ], ...moutainLeft},
+                    {'position': [x, y    , 1       ], ...moutainLeft},
+                    {'position': [x, y + 1, moutainZ], ...moutainLeft},
+                    {'position': [x, y + 1, moutainZ], ...moutainLeft},
+                    {'position': [x, y    , 1       ], ...moutainLeft},
+                    {'position': [x, y    , moutainZ], ...moutainLeft}
+                )
+
+                const moutainFront = {
+                    'normal': [0, -1, 0],
+                    'color': [colors[blockType][0] / (255 * 1.5), colors[blockType][1] / (255 * 1.5), colors[blockType][2] / (255 * 1.5)]
+                }
+                vertices.push(
+                    {'position': [x    , y, 1       ], ...moutainFront},
+                    {'position': [x + 1, y, 1       ], ...moutainFront},
+                    {'position': [x    , y, moutainZ], ...moutainFront},
+                    {'position': [x    , y, moutainZ], ...moutainFront},
+                    {'position': [x + 1, y, 1       ], ...moutainFront},
+                    {'position': [x + 1, y, moutainZ], ...moutainFront}
+                )
+            }
         }
         return vertices
     }

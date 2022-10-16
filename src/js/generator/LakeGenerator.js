@@ -8,6 +8,6 @@ export default class LakeGenerator {
     }
 
     get(x, y) {
-        return this.generator(x / this.frequency, y / this.frequency) > this.limit
+        return this.generator((x + 1) / this.frequency, (y + 1) / this.frequency) > this.limit
     }
 }
