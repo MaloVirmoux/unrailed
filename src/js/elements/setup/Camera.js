@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 
-
 export default class Camera extends THREE.OrthographicCamera {
     constructor(size) {
         super(- size.ratio, size.ratio, 1, -1)

@@ -1,4 +1,4 @@
-import { createNoise2D } from 'simplex-noise';
+import { createNoise2D } from 'simplex-noise'
 
 export default class RessourcesGenerator {
     constructor(frequency, limit) {

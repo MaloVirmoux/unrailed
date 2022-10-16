@@ -1,7 +1,5 @@
 import * as THREE from 'three'
 
-import { centerPosition } from '../../utils'
-
 export default class Wireframe extends THREE.LineSegments {
     constructor(obj) {
         super(
@@ -12,7 +10,5 @@ export default class Wireframe extends THREE.LineSegments {
                 opacity: 0.1
             })
         )
-
-        centerPosition(this)
     }
 }

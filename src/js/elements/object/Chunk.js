@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 
-import { chunk, colors } from '../../params'
-import { centerPosition } from '../../utils'
+import { chunk } from '../../params'
 
 import Ground from './Ground'
 
@@ -13,7 +12,5 @@ export default class Chunk extends THREE.Group {
         this.map = map
 
         this.add(new Ground(map))
-
-        centerPosition(this)
     }
 }

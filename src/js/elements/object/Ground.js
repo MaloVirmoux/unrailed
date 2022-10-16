@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 
 import { chunk, ground, colors } from '../../params'
-import { centerPosition } from '../../utils'
 
 export default class Ground extends THREE.Mesh {
     constructor(map) {
@@ -15,7 +14,7 @@ export default class Ground extends THREE.Mesh {
             Ground.convertVerticestoGeometry(vertices),
             new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors})
         )
-        centerPosition(this)
+        this.position.set(- chunk.length / 2, - chunk.width / 2, - ground.height.standard)
     }
 
     static createVertices(map, x, y) {
@@ -95,7 +94,7 @@ export default class Ground extends THREE.Mesh {
                 )
                 break
             default:
-                break;
+                break
         }
         return vertices
     }
