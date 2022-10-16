@@ -8,8 +8,8 @@ import RessourcesGenerator from './RessourcesGenerator'
 export default class PlainGenerator {
     constructor() {
         this.mountainGenerator = new MountainGenerator(
-            plains.moutainGenerator.frequency,
-            plains.moutainGenerator.limit
+            plains.mountainGenerator.frequency,
+            plains.mountainGenerator.limit
         )
         this.lakeGenerator = new LakeGenerator(
             plains.lakeGenerator.frequency,
@@ -29,7 +29,7 @@ export default class PlainGenerator {
         if(this.riverGenerator.get(x,y)) {
             return 'water'
         } else if(this.mountainGenerator.get(x, y)) {
-            return 'moutain'
+            return 'mountain'
         } else if (this.lakeGenerator.get(x, y)) {
             return 'water'
         } else {
