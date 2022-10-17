@@ -1,26 +1,28 @@
-const debug = true
+const debug = {
+    'physics': false
+}
 
 const chunk = {
-    "length": 64,
-    "width": 24
+    'length': 64,
+    'width': 24
 }
 
 const plains = {
-    "mountainGenerator": {
-        "frequency": 40,
-        "limit": 0.7
+    'mountainGenerator': {
+        'frequency': 40,
+        'limit': 0.7
     },
-    "lakeGenerator": {
-        "frequency": 50,
-        "limit": 0.75
+    'lakeGenerator': {
+        'frequency': 50,
+        'limit': 0.75
     },
-    "riverGenerator": {
-        "frequency": 100,
-        "limit": 0.03
+    'riverGenerator': {
+        'frequency': 100,
+        'limit': 0.03
     },
-    "ressourcesGenerator": {
-        "frequency": 30,
-        "limit": 0.3
+    'ressourcesGenerator': {
+        'frequency': 30,
+        'limit': 0.3
     }
 }
 
@@ -48,4 +50,8 @@ const colors = {
     'default': [86, 125, 70, '567D46']
 }
 
-export {debug, chunk, plains, ground, colors}
+const physics = {
+    'speed': 0.2 // 0.2
+}
+
+export {debug, chunk, plains, ground, colors, physics}

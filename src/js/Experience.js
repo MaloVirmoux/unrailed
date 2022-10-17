@@ -15,20 +15,20 @@ export default class Experience {
         this.scene.add(this.camera)
         
         this.physics = new PhysicsWorld()
-        this.phyicsPlayer = this.physics.player
+        this.phyicsPlayer = this.createPlayer()
         
-        this.createPlayer()
-
         this.createListener()
     }
 
     createChunk(map) {
+        this.physics.createBarriers(map)
         this.scene.add(new Chunk(map))
     }
 
     createPlayer() {
         this.player = new Player()
         this.scene.add(this.player)
+        return this.physics.player
     }
 
     updatePlayer() {
@@ -48,7 +48,7 @@ export default class Experience {
     }
     
     tick() {
-        this.updatePlayer()
+        this.player.update(this.phyicsPlayer.position, this.phyicsPlayer.angle)
         this.renderer.render(this.scene, this.camera)
         window.requestAnimationFrame(() => {
             this.tick()
