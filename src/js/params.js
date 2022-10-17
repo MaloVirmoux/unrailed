@@ -1,5 +1,7 @@
 const debug = {
-    'physics': false
+    'physics': false,
+    'axis': true,
+    'wireframe': false
 }
 
 const chunk = {
@@ -51,7 +53,7 @@ const colors = {
 }
 
 const physics = {
-    'speed': 0.2 // 0.2
+    'speed': 0.2
 }
 
 export {debug, chunk, plains, ground, colors, physics}

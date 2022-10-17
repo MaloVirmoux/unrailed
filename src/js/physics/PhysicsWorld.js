@@ -1,5 +1,5 @@
-import { Engine, Runner, Composite, Bodies, Body, Vector } from 'matter-js'
-import { Render } from 'matter-js'
+import { Engine, Runner, Composite, Bodies, Body, Vector, Render } from 'matter-js'
+
 import { debug, chunk, physics } from '../params'
 
 export default class PhysicsWorld {
@@ -10,12 +10,7 @@ export default class PhysicsWorld {
         this.createControls()
 
         if(debug.physics) {
-            this.render = Render.create({
-                'element': document.body,
-                'engine': this.engine,
-                'pixelRatio': 10
-            })
-            Render.run(this.render)
+            this.createRender()
         }
 
         this.runner = Runner.create()
@@ -24,52 +19,63 @@ export default class PhysicsWorld {
 
     createWalls() {
         return [
+            // Creation of the Top Wall
             Bodies.rectangle(0, (10 + chunk.width) / 2, chunk.length, 10, { isStatic: true }),
+            // Creation of the Bottom Wall
             Bodies.rectangle(0, - (10 + chunk.width) / 2, chunk.length, 10, { isStatic: true })
         ]
     }
 
     createPlayer() {
-        return Bodies.rectangle(0, 0, 0.5, 1, { friction: 0, frictionAir: 0, restitution: 0, inertia: Infinity })
+        return Bodies.rectangle(0, 0, 0.5, 1, { friction: 0, frictionAir: 0, restitution: 0, inertia: 0 })
     }
 
     createControls() {
         this.direction = Vector.create(0, 0)
-        var upPressed = false
-        var downPressed = false
-        var leftPressed = false
-        var rightPressed = false
+        const pressed = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        }
         addEventListener('keydown', (event) => {
-                   if ((event.key == 'z' || event.key == 'Z') && !upPressed) {
-                upPressed = true
+            // Start Up Movement
+            if ((event.key == 'z' || event.key == 'Z') && !pressed.up) {
+                pressed.up = true
                 this.direction = Vector.add(this.direction, Vector.create(0, 1))
-            } else if ((event.key == 's' || event.key == 'S') && !downPressed) {
-                downPressed = true
+            // Start Down Movement
+            } else if ((event.key == 's' || event.key == 'S') && !pressed.down) {
+                pressed.down = true
                 this.direction = Vector.add(this.direction, Vector.create(0, -1))
-            } else if ((event.key == 'q' || event.key == 'Q') && !leftPressed) {
-                leftPressed = true
+            // Start Left Movement
+            } else if ((event.key == 'q' || event.key == 'Q') && !pressed.left) {
+                pressed.left = true
                 this.direction = Vector.add(this.direction, Vector.create(-1, 0))
-            } else if ((event.key == 'd' || event.key == 'D') && !rightPressed) {
-                rightPressed = true
+            // Start Right Movement
+            } else if ((event.key == 'd' || event.key == 'D') && !pressed.right) {
+                pressed.right = true
                 this.direction = Vector.add(this.direction, Vector.create(1, 0))
             }
             this.updatePlayer()
         })
         addEventListener('keyup', (event) => {
+            // End Up Movement
                    if (event.key == 'z' || event.key == 'Z') {
-                upPressed = false
+                pressed.up = false
                 this.direction = Vector.add(this.direction, Vector.create(0, -1))
+            // End Down Movement
             } else if (event.key == 's' || event.key == 'S') {
-                downPressed = false
+                pressed.down = false
                 this.direction = Vector.add(this.direction, Vector.create(0, 1))
+            // End Left Movement
             } else if (event.key == 'q' || event.key == 'Q') {
-                leftPressed = false
+                pressed.left = false
                 this.direction = Vector.add(this.direction, Vector.create(1, 0))
+            // End Right Movement
             } else if (event.key == 'd' || event.key == 'D') {
-                rightPressed = false
+                pressed.right = false
                 this.direction = Vector.add(this.direction, Vector.create(-1, 0))
             }
-            this.updatePlayer()
         })
     }
 
@@ -85,9 +91,37 @@ export default class PhysicsWorld {
     }
 
     updatePlayer() {
-        Body.setVelocity(this.player, Vector.mult(Vector.normalise(this.direction), physics.speed, physics.speed))
-        if (Vector.magnitude(this.direction) != 0) {
+        // Velocity equals the normalize direction multiplied by the speed
+        Body.setVelocity(this.player, Vector.mult(Vector.normalise(this.direction), physics.speed))
+        // If there's no input, stop the player rotation, else set angle relative to the direction
+        if (Vector.magnitude(this.direction) == 0) {
+            Body.setAngularVelocity(this.player, 0)
+        } else {
             Body.setAngle(this.player, Vector.angle(this.direction, Vector.create(0, 0)))
         }
+    }
+
+    createRender() {
+        this.render = Render.create({
+            'element': document.body,
+            'engine': this.engine,
+            bounds: {
+                min: { 
+                    x: - chunk.length, 
+                    y: - chunk.width 
+                },
+                max: { 
+                    x: chunk.length, 
+                    y: chunk.width 
+                }
+             },
+             options: {
+                 hasBounds: true,
+                 width: 1920,
+                 height: (chunk.width / chunk.length) * 1920
+             },
+            'pixelRatio': 10
+        })
+        Render.run(this.render)
     }
 }

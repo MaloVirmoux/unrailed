@@ -2,13 +2,17 @@ import './style.css'
 
 import Experience from './js/Experience'
 import Map from './js/map/Map'
-import PhysicsWorld from './js/physics/PhysicsWorld'
+
 import { debug } from './js/params'
+
+if (debug.physics) {
+    document.querySelector('canvas.webgl').style.visibility = 'hidden'
+}
 
 const e = new Experience()
 const map = new Map()
 e.createChunk(map.generateNewMap())
-debug.physics ? null : e.start()
+e.start()
 
 // const m = new Map()
 // m.generateNewChunk()

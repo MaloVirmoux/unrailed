@@ -2,6 +2,7 @@ import Size from './elements/setup/Size'
 import Scene from './elements/setup/Scene'
 import Camera from './elements/setup/Camera'
 import Renderer from './elements/setup/Renderer'
+
 import Chunk from './elements/object/Chunk'
 import PhysicsWorld from './physics/PhysicsWorld'
 import Player from './elements/player/Player'
@@ -48,6 +49,7 @@ export default class Experience {
     }
     
     tick() {
+        this.physics.updatePlayer()
         this.player.update(this.phyicsPlayer.position, this.phyicsPlayer.angle)
         this.renderer.render(this.scene, this.camera)
         window.requestAnimationFrame(() => {

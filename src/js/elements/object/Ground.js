@@ -22,29 +22,39 @@ export default class Ground extends THREE.Mesh {
         const blockType = map[x][y]
         const z = ground.height.standard - (blockType == 'water' ? ground.height.waterDifference : 0)
 
+        // Creation of the Top faces Vertices
         vertices.push(...this.getVertices(blockType, x, x + 1, y, y + 1, z, z))
+        // Creation of the Left faces Vertices
         if (x == 0) {
             vertices.push(...this.getVertices(blockType, x, x, y, y + 1, 0, z))
         }
+        // Creation of the Front faces Vertices
         if (y == 0) {
             vertices.push(...this.getVertices(blockType, x, x + 1, y, y, 0, z))
         }
+        // Creation of the Right Water Sides Vertices
         if (x != chunk.length - 1 && blockType == 'water' && map[x + 1][y] != 'water') {
             vertices.push(...this.getVertices(map[x + 1][y], x + 1, x + 1, y, y + 1, z, ground.height.standard))
         }
+        // Creation of the Back Water Sides Vertices
         if (y != chunk.width - 1 && blockType == 'water' && map[x][y + 1] != 'water') {
             vertices.push(...this.getVertices(map[x][y + 1], x, x + 1, y + 1, y + 1, z, ground.height.standard))
         }
         if (blockType == 'mountain') {
             const mountainZ = ground.height.standard + (() => {
+                // Creation of the Side Mountains Z
                 if (x == 0 || x == chunk.length - 1 || y == 0 || y == chunk.width - 1 || map[x - 1][y] != 'mountain' || map[x + 1][y] != 'mountain' || map[x][y - 1] != 'mountain' || map[x][y + 1] != 'mountain') {
                     return ground.height.baseBorderMountain + (ground.height.variationBorderMountain * (Math.random() - 0.5))
+                // Creation of the Center Mountains  Z
                 } else {
                     return ground.height.baseCenterMountain + (ground.height.variationCenterMountain * (Math.random() - 0.5))
                 }
             })()
+            // Creation of the Top Mountains Vertices
             vertices.push(...this.getVertices(blockType, x, x + 1, y, y + 1, mountainZ, mountainZ))
+            // Creation of the Left Mountains Vertices
             vertices.push(...this.getVertices(blockType, x, x, y, y + 1, ground.height.standard, mountainZ))
+            // Creation of the Front Mountains Vertices
             vertices.push(...this.getVertices(blockType, x, x + 1, y, y, ground.height.standard, mountainZ))
         }
 

@@ -24,13 +24,13 @@ export default class PathVerifier {
     }
 
     createNeighbours(currentX, currentY) {        
-        // Behind
+        // Behind Neighbour
         currentX > 0 ? this.createTile({'x': currentX - 1, 'y': currentY}, 'unshift') : null
-        // Right
+        // Right Neighbour
         currentY < 31 ? this.createTile({'x': currentX, 'y': currentY + 1}, 'push') : null
-        // Left
+        // Left Neighbour
         currentY > 0 ? this.createTile({'x': currentX, 'y': currentY - 1}, 'push') : null
-        // Front
+        // Front Neighbour
         currentX < 127 ? this.createTile({'x': currentX + 1, 'y': currentY}, 'push') : null
     }
 

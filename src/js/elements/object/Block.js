@@ -15,6 +15,8 @@ export default class Block extends THREE.Mesh {
             })
         )
 
-        debug ? this.add(new Wireframe(this)) : null
+        if (debug.wireframe) {
+            this.add(new Wireframe(this))
+        }
     }
 }
