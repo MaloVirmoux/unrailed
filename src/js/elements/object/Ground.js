@@ -4,6 +4,7 @@ import { chunk, ground, colors } from '../../params'
 
 export default class Ground extends THREE.Mesh {
     constructor(map) {
+        console.log(map)
         var vertices = []
         for (let x = 0; x < chunk.length; x++) {
             for (let y = 0; y < chunk.width; y++) {

@@ -1,7 +1,15 @@
 const debug = {
-    'physics': false,
-    'axis': true,
-    'wireframe': false
+    'render': {
+        'console': false,
+        'physics': false
+    },
+    'scene': {
+        'axis': true,
+        'wireframe': false
+    },
+    'player': {
+        'raycaster': true
+    }
 }
 
 const chunk = {

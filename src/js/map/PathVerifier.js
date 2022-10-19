@@ -1,3 +1,5 @@
+import { debug } from '../params'
+
 export default class PathVerifier {
     constructor() {}
 
@@ -10,13 +12,18 @@ export default class PathVerifier {
         while(maxX != map.length - 1 && this.toVisit.length != 0) {
             const v = this.toVisit.pop()
             this.visited.push(v)
-            if(map[v.x][v.y] != 'M') {
+            if(map[v.x][v.y] != 'mountain') {
                 this.createNeighbours(v.x, v.y)
-                // map[v.x][v.y] = '.'
+                if (debug.render.console) {
+                    map[v.x][v.y] = 'path'
+                }
             }
             maxX = Math.max(maxX, v.x)
         }
         if (maxX == map.length - 1) {
+            if (debug.render.console) {
+                this.printMap(map)
+            }
             return true
         } else if (this.toVisit.length == 0){
             return false
@@ -44,6 +51,35 @@ export default class PathVerifier {
                     this.toVisit.push(tile)
                     break
             }
+        }
+    }
+    
+    printMap(map) {
+        for (let x = 0; x < map.length; x++) {
+            var line = ''
+            for (let y = 0; y < map[x].length; y++) {
+                switch (map[x][y]) {
+                    case 'path':
+                        line += '|'
+                        break
+                    case 'mountain':
+                        line += 'X'
+                        break
+                    case 'water':
+                        line += 'O'
+                        break
+                    case 'wood':
+                        line += '^'
+                        break
+                    case 'stone':
+                        line += '_'
+                        break
+                    default:
+                        line += ' '
+                        break
+                }
+            }
+            console.log(line)
         }
     }
 }

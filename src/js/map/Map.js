@@ -1,7 +1,7 @@
-import { chunk } from '../params'
-
 import PlainGenerator from '../generator/PlainGenerator'
 import PathVerifier from './PathVerifier'
+
+import { chunk } from '../params'
 
 export default class Map {
     constructor() {
@@ -25,15 +25,7 @@ export default class Map {
             this.plainGenerator.changeMountains()
             this.generateNewMap()
         }
-        return map
-    }
 
-    printMap(map) {
-        for (let x = 0; x < this.length; x++) {
-            for (let y = 0; y < this.width; y++) {
-                process.stdout.write(map[x][y])
-            }
-            console.log('')
-        }
+        return map
     }
 }

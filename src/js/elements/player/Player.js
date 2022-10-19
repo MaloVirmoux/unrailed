@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 
+import PlayerRaycaster from './PlayerRaycaster'
+
 export default class Player extends THREE.Mesh {
     constructor() {
         super(
@@ -8,10 +10,13 @@ export default class Player extends THREE.Mesh {
                 color: 0xffffff
             })
         )
+
+        this.raycaster = new PlayerRaycaster(this)
     }
 
     update(position, rotation) {
         this.position.set(position.x, position.y, 1)
         this.rotation.set(0, 0, rotation)
+        this.raycaster.update()
     }
 }

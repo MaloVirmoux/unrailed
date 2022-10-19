@@ -9,7 +9,7 @@ export default class PhysicsWorld {
         Composite.add(this.engine.world, [...this.createWalls(), this.player])
         this.createControls()
 
-        if(debug.physics) {
+        if(debug.render.physics) {
             this.createRender()
         }
 
@@ -97,7 +97,7 @@ export default class PhysicsWorld {
         if (Vector.magnitude(this.direction) == 0) {
             Body.setAngularVelocity(this.player, 0)
         } else {
-            Body.setAngle(this.player, Vector.angle(this.direction, Vector.create(0, 0)))
+            Body.setAngle(this.player, Vector.angle(Vector.create(0, 0), this.direction))
         }
     }
 
