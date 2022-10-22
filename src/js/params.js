@@ -39,16 +39,7 @@ const plains = {
 const ground = {
     'height': {
         'standard' : 1,
-        'waterDifference' : 0.2,
-        'baseBorderMountain': 1,
-        'variationBorderMountain' : 1,
-        'baseCenterMountain': 2,
-        'variationCenterMountain' : 2
-    },
-    'shadow': {
-        'top': 1,
-        'side': 2,
-        'front': 1.5
+        'waterDifference' : 0.2
     }
 }
 

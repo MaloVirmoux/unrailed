@@ -5,11 +5,11 @@ import Scene from './render/setup/Scene'
 import Camera from './render/setup/Camera'
 import Renderer from './render/setup/Renderer'
 import Chunk from './render/object/Chunk'
+import Player from './render/player/Player'
 
 import PhysicsWorld from './physics/PhysicsWorld'
 
-import Player from './render/player/Player'
-import Ressources from './render/object/Ressources'
+import Assets from './render/setup/Assets'
 
 export default class Experience {
     constructor() {
@@ -26,7 +26,7 @@ export default class Experience {
         
         this.createListener()
 
-        this.ressources = new Ressources(this)
+        this.assets = new Assets(this)
     }
 
     createPlayer() {
@@ -46,7 +46,7 @@ export default class Experience {
     start() {
         const map = this.mapGenerator.getNewMap()
         this.physics.createBarriers(map)
-        this.scene.add(new Chunk(map, this.ressources))
+        this.scene.add(new Chunk(map, this.assets))
         this.tick()
     }
     
