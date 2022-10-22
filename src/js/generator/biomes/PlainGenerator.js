@@ -1,9 +1,9 @@
-import { plains } from '../params'
+import { plains } from '../../params'
 
-import MountainGenerator from './MountainGenerator'
-import LakeGenerator from './LakeGenerator'
-import RiverGenerator from './RiverGenerator'
-import RessourcesGenerator from './RessourcesGenerator'
+import MountainGenerator from '../types/MountainGenerator'
+import LakeGenerator from '../types/LakeGenerator'
+import RiverGenerator from '../types/RiverGenerator'
+import RessourcesGenerator from '../types/RessourcesGenerator'
 
 export default class PlainGenerator {
     constructor() {

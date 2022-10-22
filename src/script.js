@@ -1,7 +1,6 @@
 import './style.css'
 
 import Experience from './js/Experience'
-import Map from './js/map/Map'
 
 import { debug } from './js/params'
 
@@ -10,6 +9,3 @@ if (debug.render.console || debug.render.physics) {
 }
 
 const e = new Experience()
-const map = new Map()
-e.createChunk(map.generateNewMap())
-e.start()

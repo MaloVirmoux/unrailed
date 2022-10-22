@@ -1,9 +1,9 @@
-import PlainGenerator from '../generator/PlainGenerator'
+import PlainGenerator from './biomes/PlainGenerator'
 import PathVerifier from './PathVerifier'
 
 import { chunk } from '../params'
 
-export default class Map {
+export default class MapGenerator {
     constructor() {
         this.length = chunk.length
         this.width = chunk.width
@@ -12,18 +12,18 @@ export default class Map {
         this.mapsList = []
     }
 
-    generateNewMap() {
+    getNewMap() {
         const map = new Array(this.length).fill(null).map(()=>new Array(this.width).fill(null))
-        map.forEach((column, x) => {
-            column.forEach((block, y) => {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
                 map[x][y] = this.plainGenerator.get(x, y)
-            })
-        })
+            }
+        }
         if(this.pathVerifier.verify(map, 15)) {
             this.mapsList.push(map)
         } else {
             this.plainGenerator.changeMountains()
-            this.generateNewMap()
+            this.getNewMap()
         }
 
         return map

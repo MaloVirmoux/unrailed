@@ -4,6 +4,9 @@ import { debug, chunk, physics } from '../params'
 
 export default class PhysicsWorld {
     constructor() {
+        this.length = chunk.length
+        this.width = chunk.width
+
         this.engine = Engine.create({'gravity': {'x': 0, 'y': 0}})
         this.player = this.createPlayer()
         Composite.add(this.engine.world, [...this.createWalls(), this.player])
@@ -20,9 +23,9 @@ export default class PhysicsWorld {
     createWalls() {
         return [
             // Creation of the Top Wall
-            Bodies.rectangle(0, (10 + chunk.width) / 2, chunk.length, 10, { isStatic: true }),
+            Bodies.rectangle(0, (10 + this.width) / 2, this.length, 10, { isStatic: true }),
             // Creation of the Bottom Wall
-            Bodies.rectangle(0, - (10 + chunk.width) / 2, chunk.length, 10, { isStatic: true })
+            Bodies.rectangle(0, - (10 + this.width) / 2, this.length, 10, { isStatic: true })
         ]
     }
 
@@ -81,10 +84,10 @@ export default class PhysicsWorld {
 
     createBarriers(map) {
         this.barriers = []
-        for (let x = 0; x < chunk.length; x++) {
-            for (let y = 0; y < chunk.width; y++) {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
                 const blocktype = map[x][y]
-                blocktype == 'mountain' || blocktype == 'water' ? this.barriers.push(Bodies.rectangle(x - ((chunk.length - 1) / 2), y - ((chunk.width - 1) / 2), 1, 1, {'isStatic': true})) : null
+                blocktype == 'mountain' || blocktype == 'water' ? this.barriers.push(Bodies.rectangle(x - ((this.length - 1) / 2), y - ((this.width - 1) / 2), 1, 1, {'isStatic': true})) : null
             }
         }
         Composite.add(this.engine.world, this.barriers)
@@ -107,18 +110,18 @@ export default class PhysicsWorld {
             'engine': this.engine,
             bounds: {
                 min: { 
-                    x: - chunk.length, 
-                    y: - chunk.width 
+                    x: - this.length, 
+                    y: - this.width 
                 },
                 max: { 
-                    x: chunk.length, 
-                    y: chunk.width 
+                    x: this.length, 
+                    y: this.width 
                 }
              },
              options: {
                  hasBounds: true,
                  width: 1920,
-                 height: (chunk.width / chunk.length) * 1920
+                 height: (this.width / this.length) * 1920
              },
             'pixelRatio': 10
         })

@@ -1,14 +1,20 @@
-import Size from './elements/setup/Size'
-import Scene from './elements/setup/Scene'
-import Camera from './elements/setup/Camera'
-import Renderer from './elements/setup/Renderer'
+import MapGenerator from './generator/MapGenerator'
 
-import Chunk from './elements/object/Chunk'
+import Size from './render/setup/Size'
+import Scene from './render/setup/Scene'
+import Camera from './render/setup/Camera'
+import Renderer from './render/setup/Renderer'
+import Chunk from './render/object/Chunk'
+
 import PhysicsWorld from './physics/PhysicsWorld'
-import Player from './elements/player/Player'
+
+import Player from './render/player/Player'
+import Ressources from './render/object/Ressources'
 
 export default class Experience {
     constructor() {
+        this.mapGenerator = new MapGenerator()
+
         this.size = new Size()
         this.scene = new Scene()
         this.camera = new Camera(this.size)
@@ -19,21 +25,14 @@ export default class Experience {
         this.phyicsPlayer = this.createPlayer()
         
         this.createListener()
-    }
 
-    createChunk(map) {
-        this.physics.createBarriers(map)
-        this.scene.add(new Chunk(map))
+        this.ressources = new Ressources(this)
     }
 
     createPlayer() {
         this.player = new Player()
         this.scene.add(this.player)
         return this.physics.player
-    }
-
-    updatePlayer() {
-        this.player.position.set(this.phyicsPlayer.position.x, this.phyicsPlayer.position.y, 0.5)
     }
 
     createListener(){
@@ -45,6 +44,9 @@ export default class Experience {
     }
     
     start() {
+        const map = this.mapGenerator.getNewMap()
+        this.physics.createBarriers(map)
+        this.scene.add(new Chunk(map, this.ressources))
         this.tick()
     }
     
@@ -55,5 +57,9 @@ export default class Experience {
         window.requestAnimationFrame(() => {
             this.tick()
         })
+    }
+
+    updatePlayer() {
+        this.player.position.set(this.phyicsPlayer.position.x, this.phyicsPlayer.position.y, 0.5)
     }
 }

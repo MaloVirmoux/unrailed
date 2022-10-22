@@ -4,7 +4,6 @@ import { chunk, ground, colors } from '../../params'
 
 export default class Ground extends THREE.Mesh {
     constructor(map) {
-        console.log(map)
         var vertices = []
         for (let x = 0; x < chunk.length; x++) {
             for (let y = 0; y < chunk.width; y++) {
@@ -15,7 +14,10 @@ export default class Ground extends THREE.Mesh {
             Ground.convertVerticestoGeometry(vertices),
             new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors})
         )
-        this.position.set(- chunk.length / 2, - chunk.width / 2, - ground.height.standard)
+
+        this.length = chunk.length
+        this.width = chunk.width
+        this.position.set(0, 0, - ground.height.standard)
     }
 
     static createVertices(map, x, y) {
@@ -66,11 +68,11 @@ export default class Ground extends THREE.Mesh {
         const vertices = []
         const position = fromX == toX ? 'side' : fromY == toY ? 'front' : fromZ == toZ ? 'top' : null
         const vertice = {
-            'normal': fromZ == toZ ? [0, 0, 1] : fromX == toX ? [-1, 0, 0] : fromY == toY ? [0, -1, 0] : null,
+            'normal': position == 'side' ? [-1, 0, 0] : position == 'front' ? [0, -1, 0] : position == 'top' ? [1, 0, 0] : null,
             'color': [
-                colors[blockType][0] / (255 * ground['shadow'][position]),
-                colors[blockType][1] / (255 * ground['shadow'][position]),
-                colors[blockType][2] / (255 * ground['shadow'][position])
+                colors[blockType][position][0] / 255,
+                colors[blockType][position][1] / 255,
+                colors[blockType][position][2] / 255 
             ]
         }
         switch (position) {
