@@ -49,6 +49,11 @@ const block = {
             'small': ['small_0', 'small_1', 'small_2'],
             'medium': ['medium_0'],
             'big': ['big_0']
+        },
+        'wood': {
+            'small': ['small_0'],
+            'medium': ['medium_0', 'medium_1'],
+            'big': ['big_0']
         }
     },
     'probability': {
