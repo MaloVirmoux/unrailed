@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 import MapGenerator from './generator/MapGenerator'
 
 import Size from './render/setup/Size'
@@ -19,6 +21,7 @@ export default class Experience {
         this.scene = new Scene()
         this.camera = new Camera(this.size)
         this.renderer = new Renderer(this.size)
+
         this.scene.add(this.camera)
         
         this.physics = new PhysicsWorld()

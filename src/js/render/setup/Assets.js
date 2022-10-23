@@ -1,9 +1,8 @@
 import * as THREE from 'three'
 
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
-import { colors } from '../../params'
+import { block } from '../../params'
 
 export default class Assets {
     constructor(e) {
@@ -15,35 +14,40 @@ export default class Assets {
         )
 
         this.textureLoader = new THREE.TextureLoader(this.manager).setPath('./textures/')
-        
-        this.dracoLoader = new DRACOLoader().setDecoderPath('./draco/')
-        this.gltfLoader = new GLTFLoader(this.manager).setPath('./models/').setDRACOLoader(this.dracoLoader)
+        this.gltfLoader = new GLTFLoader(this.manager).setPath('./models/')
         
         this.textures = {}
         this.loadTextures()
         this.models = {}
-        this.loadModels({
-            'stone': ['model0', 'model1', 'model2', 'model3', 'model4']
-        })
+        this.loadBlocks(block.files)
     }
 
     loadTextures() {
         return null
     }
 
-    loadModels(listModels) {
-        this.models.stone = {}
-        listModels.stone.forEach((file) => {
-            this.gltfLoader.load(
-                `stone/${file}.glb`,
-                (loaded) => {
-
-                    this.models.stone[file] = loaded.scene.children[0]
-                    this.models.stone[file].children[0].material = new THREE.MeshBasicMaterial({color: `rgb(${colors.stone.top[0]}, ${colors.stone.top[1]}, ${colors.stone.top[2]})`})
-                    this.models.stone[file].children[1].material = new THREE.MeshBasicMaterial({color: `rgb(${colors.stone.side[0]}, ${colors.stone.side[1]}, ${colors.stone.side[2]})`})
-                    this.models.stone[file].children[2].material = new THREE.MeshBasicMaterial({color: `rgb(${colors.stone.front[0]}, ${colors.stone.front[1]}, ${colors.stone.front[2]})`})
-                }
-            )
-        })
+    loadBlocks(listFiles) {
+        for(let type in listFiles) {
+            this.models[type] = {}
+            for(let size in listFiles[type]) {
+                this.models[type][size] = {}
+                listFiles[type][size].forEach((file) => {
+                    this.models[type][size][file] = {}
+                    // const steps = ['step_0', 'step_1', 'step_2']
+                    const steps = ['step_0']
+                    steps.forEach((step) => {
+                        this.gltfLoader.load(
+                            `${type}/${size}/${file}/${step}.glb`,
+                            (loaded) => {
+                                this.models[type][size][file][step] = loaded.scene.children[0]
+                                this.models[type][size][file][step].children.forEach((child) => {
+                                    child.material.color.convertLinearToSRGB()
+                                })
+                            }
+                        )
+                    })
+                })
+            }
+        }
     }
 }

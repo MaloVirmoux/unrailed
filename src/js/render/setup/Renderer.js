@@ -6,6 +6,8 @@ export default class Renderer extends THREE.WebGLRenderer {
             canvas: document.querySelector('canvas.webgl'),
             antialias: true
         })
+        // this.outputEncoding = THREE.sRGBEncoding
+        // this.outputEncoding = THREE.LinearEncoding
         this.update(size)
     }
 

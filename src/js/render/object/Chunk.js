@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 
 import { chunk } from '../../params'
-import { forEachTile } from '../../utils'
 
 import Ground from './Ground'
+import Block from './Block'
 
 export default class Chunk extends THREE.Group {
     constructor(map, assets) {
@@ -27,18 +27,9 @@ export default class Chunk extends THREE.Group {
         for (let x = 0; x < this.length; x++) {
             for (let y = 0; y < this.width; y++) {
                 if (this.map[x][y] == 'stone') {
-                    const mesh = (() => {
-                        switch (this.depthMap[x][y]) {
-                            case 0:
-                                return this.assets.models.stone.model1.clone()
-                            case 1:
-                                return this.assets.models.stone.model2.clone()
-                            default:
-                                return this.assets.models.stone.model0.clone()
-                        }
-                    })()
-                    mesh.position.set(x, y, 0)
-                    group.add(mesh)         
+                    const block = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
+                    block.position.set(x, y, 0)
+                    this.add(block)     
                 }
             }
         }
