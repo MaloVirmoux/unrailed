@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
-import { chunk } from '../../params'
+import * as params from '../../params'
+import { getArray } from '../../utils'
 
 import Ground from './Ground'
 import Block from './Block'
@@ -8,8 +9,8 @@ import Block from './Block'
 export default class Chunk extends THREE.Group {
     constructor(map, assets) {
         super()
-        this.length = chunk.length
-        this.width = chunk.width
+        this.length = params.chunk.length
+        this.width = params.chunk.width
 
         this.map = map
         this.depthMap = this.getDepthMap()
@@ -27,8 +28,8 @@ export default class Chunk extends THREE.Group {
         const stones = new THREE.Group()
         const woods = new THREE.Group()
         ressources.add(stones, woods)
-        for (let x = 0; x < this.length; x++) {
-            for (let y = 0; y < this.width; y++) {
+        for (let x = 0; x < this.map.length; x++) {
+            for (let y = 0; y < this.map[x].length; y++) {
                 if (this.map[x][y] == 'stone' || this.map[x][y] == 'wood') {
                     const block = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
                     block.position.set(x, y, 0)
@@ -47,10 +48,10 @@ export default class Chunk extends THREE.Group {
     }
 
     getDepthMap () {
-        const depthMap = new Array(this.length).fill(null).map(()=>new Array(this.width).fill(null))
+        const depthMap = getArray()
         let toCompute = []
-        for (let x = 0; x < this.length; x++) {
-            for (let y = 0; y < this.width; y++) {
+        for (let x = 0; x < depthMap.length; x++) {
+            for (let y = 0; y < depthMap[x].length; y++) {
                 const blocktype = this.map[x][y]
                 if (x == 0 || x == this.length - 1 || y == 0 || y == this.width - 1) {
                     depthMap[x][y] = 0

@@ -1,4 +1,4 @@
-import { plains } from '../../params'
+import * as params from '../../params'
 
 import MountainGenerator from '../types/MountainGenerator'
 import LakeGenerator from '../types/LakeGenerator'
@@ -8,20 +8,20 @@ import RessourcesGenerator from '../types/RessourcesGenerator'
 export default class PlainGenerator {
     constructor() {
         this.mountainGenerator = new MountainGenerator(
-            plains.mountainGenerator.frequency,
-            plains.mountainGenerator.limit
+            params.plains.mountainGenerator.frequency,
+            params.plains.mountainGenerator.limit
         )
         this.lakeGenerator = new LakeGenerator(
-            plains.lakeGenerator.frequency,
-            plains.lakeGenerator.limit
+            params.plains.lakeGenerator.frequency,
+            params.plains.lakeGenerator.limit
         )
         this.riverGenerator = new RiverGenerator(
-            plains.riverGenerator.frequency,
-            plains.riverGenerator.limit
+            params.plains.riverGenerator.frequency,
+            params.plains.riverGenerator.limit
         )
         this.ressourcesGenerator = new RessourcesGenerator(
-            plains.ressourcesGenerator.frequency,
-            plains.ressourcesGenerator.limit
+            params.plains.ressourcesGenerator.frequency,
+            params.plains.ressourcesGenerator.limit
         )
     }
 

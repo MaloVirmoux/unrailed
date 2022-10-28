@@ -109,7 +109,12 @@ const colors = {
 }
 
 const physics = {
-    'speed': 0.2
+    'speed': 0.2,
+    'range': 3,
+    'hitbox': {
+        'length': 1,
+        'width': 0.5
+    }
 }
 
 export {debug, chunk, plains, ground, block, colors, physics}

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
-import { block } from '../../params'
+import * as params from '../../params'
 
 export default class Assets {
     constructor(e) {
@@ -19,7 +19,7 @@ export default class Assets {
         this.textures = {}
         this.loadTextures()
         this.models = {}
-        this.loadBlocks(block.files)
+        this.loadBlocks(params.block.files)
     }
 
     loadTextures() {

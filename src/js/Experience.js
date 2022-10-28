@@ -1,13 +1,11 @@
-import * as THREE from 'three'
-
 import MapGenerator from './generator/MapGenerator'
 
 import Size from './render/setup/Size'
 import Scene from './render/setup/Scene'
 import Camera from './render/setup/Camera'
 import Renderer from './render/setup/Renderer'
-import Chunk from './render/object/Chunk'
 import Player from './render/player/Player'
+import Chunk from './render/object/Chunk'
 
 import PhysicsWorld from './physics/PhysicsWorld'
 
@@ -22,20 +20,14 @@ export default class Experience {
         this.camera = new Camera(this.size)
         this.renderer = new Renderer(this.size)
 
-        this.scene.add(this.camera)
+        this.player = new Player()
+        this.scene.add(this.camera, this.player)
         
         this.physics = new PhysicsWorld()
-        this.phyicsPlayer = this.createPlayer()
         
         this.createListener()
 
         this.assets = new Assets(this)
-    }
-
-    createPlayer() {
-        this.player = new Player()
-        this.scene.add(this.player)
-        return this.physics.player
     }
 
     createListener(){
@@ -49,20 +41,17 @@ export default class Experience {
     start() {
         const map = this.mapGenerator.getNewMap()
         this.physics.createBarriers(map)
+        this.physics.createInteractable(map)
         this.scene.add(new Chunk(map, this.assets))
         this.tick()
     }
     
     tick() {
-        this.physics.updatePlayer()
-        this.player.update(this.phyicsPlayer.position, this.phyicsPlayer.angle)
+        this.physics.update()
+        this.player.update(this.physics.player.body.position, this.physics.player.body.angle)
         this.renderer.render(this.scene, this.camera)
         window.requestAnimationFrame(() => {
             this.tick()
         })
-    }
-
-    updatePlayer() {
-        this.player.position.set(this.phyicsPlayer.position.x, this.phyicsPlayer.position.y, 0.5)
     }
 }

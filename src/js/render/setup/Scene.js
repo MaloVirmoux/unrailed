@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 
-import { debug } from '../../params'
+import * as params from '../../params'
 
 export default class Scene extends THREE.Scene {
     constructor() {
         super()
         this.background = new THREE.Color('#87CEEB')
 
-        if (debug.scene.axis) {
+        if (params.debug.scene.axis) {
             this.createHelpers()
         }
     }

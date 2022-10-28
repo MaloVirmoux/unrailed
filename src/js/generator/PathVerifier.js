@@ -1,4 +1,4 @@
-import { debug } from '../params'
+import * as params from '../params'
 
 export default class PathVerifier {
     constructor() {}
@@ -14,14 +14,14 @@ export default class PathVerifier {
             this.visited.push(v)
             if(map[v.x][v.y] != 'mountain') {
                 this.createNeighbours(v.x, v.y)
-                if (debug.render.console) {
+                if (params.debug.render.console) {
                     map[v.x][v.y] = 'path'
                 }
             }
             maxX = Math.max(maxX, v.x)
         }
         if (maxX == map.length - 1) {
-            if (debug.render.console) {
+            if (params.debug.render.console) {
                 this.printMap(map)
             }
             return true

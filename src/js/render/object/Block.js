@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import { debug, block } from '../../params'
+import * as params from '../../params'
 
 import Wireframe from './Wireframe'
 
@@ -10,7 +10,7 @@ export default class Block extends THREE.Group {
         this.assets = assets
         this.type = type
         this.size = (() => {
-            const probability = block.probability[(() => {
+            const probability = params.block.probability[(() => {
                 switch (depth) {
                     case 0:
                         return '0'
@@ -31,11 +31,11 @@ export default class Block extends THREE.Group {
                 return 'big'
             }
         })()
-        const modelName = block.files[this.type][this.size][Math.floor(Math.random() * block.files[this.type][this.size].length)]
+        const modelName = params.block.files[this.type][this.size][Math.floor(Math.random() * params.block.files[this.type][this.size].length)]
         
         this.add(this.assets.models[this.type][this.size][modelName]['step_0'].clone())
 
-        if (debug.scene.wireframe) {
+        if (params.debug.scene.wireframe) {
             this.add(new Wireframe(this))
         }
     }
