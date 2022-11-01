@@ -4,9 +4,11 @@ import * as params from '../../params'
 
 export default class Ground extends THREE.Mesh {
     constructor(map, depthMap) {
+        const length = params.chunk.length
+        const width = params.chunk.width
         var vertices = []
-        for (let x = 0; x < map.length; x++) {
-            for (let y = 0; y < map[x].length; y++) {
+        for (let x = 0; x < length; x++) {
+            for (let y = 0; y < width; y++) {
                 vertices = vertices.concat(Ground.createVertices(map, depthMap, x, y))
             }
         }
@@ -15,8 +17,6 @@ export default class Ground extends THREE.Mesh {
             new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors})
         )
 
-        this.length = params.chunk.length
-        this.width = params.chunk.width
         this.position.set(0, 0, - params.ground.height.standard)
     }
 

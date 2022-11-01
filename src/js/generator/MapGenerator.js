@@ -1,10 +1,14 @@
 import PlainGenerator from './biomes/PlainGenerator'
 import PathVerifier from './PathVerifier'
 
+import * as params from '../params'
 import { getArray } from '../utils'
+
 
 export default class MapGenerator {
     constructor() {
+        this.length = params.chunk.length
+        this.width = params.chunk.width
         this.plainGenerator = new PlainGenerator()
         this.pathVerifier = new PathVerifier()
         this.mapsList = []
@@ -12,8 +16,8 @@ export default class MapGenerator {
 
     getNewMap() {
         const map = getArray()
-        for (let x = 0; x < map.length; x++) {
-            for (let y = 0; y < map[x].length; y++) {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
                 map[x][y] = this.plainGenerator.get(x, y)
             }
         }

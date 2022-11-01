@@ -1,9 +1,11 @@
 import * as THREE from 'three'
 
+import * as params from '../../params'
+
 export default class Camera extends THREE.OrthographicCamera {
     constructor(size) {
         super(- size.ratio, size.ratio, 1, -1)
-        this.position.set(0, 0, 5)
+        this.position.set(params.chunk.length / 2, params.chunk.width / 2, 5)
         this.zoom = 0.05
         
         this.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), THREE.MathUtils.degToRad(60))

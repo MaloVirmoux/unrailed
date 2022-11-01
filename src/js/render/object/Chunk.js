@@ -19,8 +19,6 @@ export default class Chunk extends THREE.Group {
         this.ground = new Ground(this.map, this.depthMap)
         this.ressources = this.createRessources()
         this.add(this.ground, this.ressources)
-
-        this.position.set(- this.length / 2, - this.width / 2, 0)
     }
 
     createRessources() {
@@ -28,8 +26,8 @@ export default class Chunk extends THREE.Group {
         const stones = new THREE.Group()
         const woods = new THREE.Group()
         ressources.add(stones, woods)
-        for (let x = 0; x < this.map.length; x++) {
-            for (let y = 0; y < this.map[x].length; y++) {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
                 if (this.map[x][y] == 'stone' || this.map[x][y] == 'wood') {
                     const block = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
                     block.position.set(x, y, 0)
@@ -50,8 +48,8 @@ export default class Chunk extends THREE.Group {
     getDepthMap () {
         const depthMap = getArray()
         let toCompute = []
-        for (let x = 0; x < depthMap.length; x++) {
-            for (let y = 0; y < depthMap[x].length; y++) {
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
                 const blocktype = this.map[x][y]
                 if (x == 0 || x == this.length - 1 || y == 0 || y == this.width - 1) {
                     depthMap[x][y] = 0

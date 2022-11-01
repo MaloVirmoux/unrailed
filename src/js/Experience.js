@@ -7,7 +7,7 @@ import Renderer from './render/setup/Renderer'
 import Player from './render/player/Player'
 import Chunk from './render/object/Chunk'
 
-import PhysicsWorld from './physics/PhysicsWorld'
+import PhysicsChunk from './physics/PhysicsChunk'
 
 import Assets from './render/setup/Assets'
 
@@ -22,9 +22,7 @@ export default class Experience {
 
         this.player = new Player()
         this.scene.add(this.camera, this.player)
-        
-        this.physics = new PhysicsWorld()
-        
+    
         this.createListener()
 
         this.assets = new Assets(this)
@@ -40,18 +38,18 @@ export default class Experience {
     
     start() {
         const map = this.mapGenerator.getNewMap()
-        this.physics.createBarriers(map)
-        this.physics.createInteractable(map)
         this.scene.add(new Chunk(map, this.assets))
-        this.tick()
+        const physics = new PhysicsChunk(map)
+        physics.start()
+        this.tick(physics)
     }
     
-    tick() {
-        this.physics.update()
-        this.player.update(this.physics.player.body.position, this.physics.player.body.angle)
+    tick(physics) {
+        physics.update()
+        this.player.update(physics.player.body.position, physics.player.body.angle)
         this.renderer.render(this.scene, this.camera)
         window.requestAnimationFrame(() => {
-            this.tick()
+            this.tick(physics)
         })
     }
 }
