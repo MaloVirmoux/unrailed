@@ -1,6 +1,7 @@
 import * as MATTER from 'matter-js'
 
 import PhysicsPlayer from './PhysicsPlayer'
+import PhysicsRay from './PhysicsRay'
 
 import * as params from '../params'
 
@@ -19,6 +20,8 @@ export default class PhysicsChunk {
             stones: this.stones
         } = this.createBodies())
         this.addBodies()
+
+        this.ray = new PhysicsRay(this.player, this.woods, this.stones)
 
         if(params.debug.render.physics) {
             this.createRender()
@@ -82,35 +85,7 @@ export default class PhysicsChunk {
     // TODO : Mine the blocks
     update() {
         this.player.update()
-        const target = this.queryRay()
-        if (target && this.target && target.body.id == this.target.body.id) {
-            //
-        } else {
-            if (target) {
-                //
-            } else {
-                //
-            }
-            this.target = target
-        }
-    }
-
-    queryRay() {
-        return MATTER.Query.ray(
-            [
-                ...this.woods.flat().filter(Boolean),
-                ...this.stones.flat().filter(Boolean)
-            ],
-            this.player.body.position,
-            MATTER.Vector.add(
-                this.player.body.position,
-                MATTER.Vector.mult(
-                    this.player.angle,
-                    params.physics.range
-                )
-            ),
-            params.physics.hitbox.width
-        )[0]
+        this.ray.update()
     }
 
     createRender() {
