@@ -3,19 +3,20 @@ import * as MATTER from 'matter-js'
 import * as params from '../params'
 
 export default class PhysicsRay {
-    constructor(player, woods, stones) {
+    constructor(phys, player, woods, stones) {
+        this.phys = phys
         this.player = player
         this.woods = woods
         this.stones = stones
-        this.target = null
+        this.target = false
         this.countdown = null
     }
 
     queryRay() {
-        return MATTER.Query.ray(
+        const collisions = MATTER.Query.ray(
             [
-                ...this.woods.flat().filter(Boolean),
-                ...this.stones.flat().filter(Boolean)
+                ...Object.values(this.woods),
+                ...Object.values(this.stones)
             ],
             this.player.body.position,
             MATTER.Vector.add(
@@ -26,20 +27,33 @@ export default class PhysicsRay {
                 )
             ),
             params.physics.hitbox.width
-        )[0]
-    }
+        )
+        let toKeep = [-1, Infinity]
+        collisions.forEach((collision, i) => {
+            const distance = MATTER.Vector.magnitude(MATTER.Vector.sub(this.player.body.position, collision.body.position))
+            distance < toKeep[1] ? toKeep = [i, distance] : null
+        })
+        return collisions[toKeep[0]]
+    }s
 
     update() {
-        const target = this.queryRay()
+        const newTarget = this.queryRay()
 
-        if ((target && (!this.target || target.body.id != this.target.body.id)) || (!target && this.target)) {
-            clearInterval(this.countdown)
-            this.target = target
-            if (target) {
-                this.countdown = setInterval(() => {
-                    console.log(this.target.body.id)
-                }, 1000)
-            }
+        const isNewTarget = newTarget && !this.target
+        const changedTarget = newTarget && this.target && newTarget.body.id != this.target.body.id
+        const leftTarget = !newTarget && this.target
+        const noChange = (!newTarget && !this.target) || (newTarget && this.target && this.target.body.id == this.target.body.id)
+        
+        if (isNewTarget || changedTarget || leftTarget) {
+            clearTimeout(this.timeout)
+            this.target = newTarget
+        }
+        if (isNewTarget || changedTarget) {
+            this.timeout = setTimeout(() => {
+                this.phys.remove(this.target.body)
+                this.woods = this.phys.woods
+                this.stones = this.phys.stones
+            }, 1500)
         }
     }
 }

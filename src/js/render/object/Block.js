@@ -7,6 +7,7 @@ import Wireframe from './Wireframe'
 export default class Block extends THREE.Group {
     constructor(assets, type, depth) {
         super()
+        this.name = 'Block'
         this.assets = assets
         this.type = type
         this.size = (() => {

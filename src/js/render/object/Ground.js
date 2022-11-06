@@ -6,7 +6,7 @@ export default class Ground extends THREE.Mesh {
     constructor(map, depthMap) {
         const length = params.chunk.length
         const width = params.chunk.width
-        var vertices = []
+        let vertices = []
         for (let x = 0; x < length; x++) {
             for (let y = 0; y < width; y++) {
                 vertices = vertices.concat(Ground.createVertices(map, depthMap, x, y))

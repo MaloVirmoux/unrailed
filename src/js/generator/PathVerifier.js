@@ -6,7 +6,7 @@ export default class PathVerifier {
     verify(map, startY) {
         this.toVisit = []
         this.visited = []
-        var maxX = 0
+        let maxX = 0
         this.toVisit.push({'x': 0, 'y': startY})
         
         while(maxX != map.length - 1 && this.toVisit.length != 0) {
@@ -56,7 +56,7 @@ export default class PathVerifier {
     
     printMap(map) {
         for (let x = 0; x < map.length; x++) {
-            var line = ''
+            let line = ''
             for (let y = 0; y < map[x].length; y++) {
                 switch (map[x][y]) {
                     case 'path':

@@ -38,10 +38,11 @@ export default class Experience {
     
     start() {
         const map = this.mapGenerator.getNewMap()
-        this.scene.add(new Chunk(map, this.assets))
-        const physics = new PhysicsChunk(map)
-        physics.start()
-        this.tick(physics)
+        const renderChunk = new Chunk(map, this.assets)
+        this.scene.add(renderChunk)
+        const physicsChunk = new PhysicsChunk(renderChunk, map)
+        physicsChunk.start()
+        this.tick(physicsChunk)
     }
     
     tick(physics) {

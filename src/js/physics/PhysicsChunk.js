@@ -6,7 +6,8 @@ import PhysicsRay from './PhysicsRay'
 import * as params from '../params'
 
 export default class PhysicsChunk {
-    constructor(map) {
+    constructor(visual, map) {
+        this.visual = visual
         this.map = map
         this.length = params.chunk.length
         this.width = params.chunk.width
@@ -21,7 +22,7 @@ export default class PhysicsChunk {
         } = this.createBodies())
         this.addBodies()
 
-        this.ray = new PhysicsRay(this.player, this.woods, this.stones)
+        this.ray = new PhysicsRay(this, this.player, this.woods, this.stones)
 
         if(params.debug.render.physics) {
             this.createRender()
@@ -31,25 +32,25 @@ export default class PhysicsChunk {
     }
 
     createBodies() {
-        const mountains = []
-        const waters = []
-        const woods = []
-        const stones = []
+        const mountains = {}
+        const waters = {}
+        const woods = {}
+        const stones = {}
         for (let x = 0; x < this.length; x++) {
             for (let y = 0; y < this.width; y++) {
                 const body = MATTER.Bodies.rectangle(x + 0.5, y + 0.5, 1, 1, {'isStatic': true})
                 switch (this.map[x][y]) {
                     case 'mountain':
-                        mountains.push(body)
+                        mountains[body.id] = body
                         break
                     case 'water':
-                        waters.push(body)
+                        waters[body.id] = body
                         break
                     case 'wood':
-                        woods.push(body)
+                        woods[body.id] = body
                         break
                     case 'stone':
-                        stones.push(body)
+                        stones[body.id] = body
                         break
                     default:
                         break
@@ -71,10 +72,10 @@ export default class PhysicsChunk {
             MATTER.Bodies.rectangle(this.length / 2, this.width + 5, this.length, 10, { isStatic: true }),
             // Creation of the Bottom Wall
             MATTER.Bodies.rectangle(this.length / 2, - 5, this.length, 10, { isStatic: true }),
-            ...this.mountains,
-            ...this.waters,
-            ...this.woods,
-            ...this.stones
+            ...Object.values(this.mountains),
+            ...Object.values(this.waters),
+            ...Object.values(this.woods),
+            ...Object.values(this.stones)
         ])
     }
 
@@ -82,12 +83,22 @@ export default class PhysicsChunk {
         MATTER.Runner.run(this.runner, this.engine)
     }
 
-    // TODO : Mine the blocks
     update() {
         this.player.update()
         this.ray.update()
     }
 
+    remove(body) {
+        this.visual.removeMesh({
+            'x': Math.trunc(body.position.x),
+            'y': Math.trunc(body.position.y)
+        })
+        body.id in this.woods ? delete this.woods[body.id] : null
+        body.id in this.stones ? delete this.stones[body.id] : null
+        MATTER.Composite.remove(this.engine.world, body)
+    }
+
+    // For Debug
     createRender() {
         this.render = MATTER.Render.create({
             'element': document.body,
