@@ -1,6 +1,6 @@
 import * as MATTER from 'matter-js'
 
-import * as params from '../params'
+import * as params from '../../params'
 
 export default class PhysicsPlayer {
     constructor() {

@@ -1,18 +1,18 @@
 import * as MATTER from 'matter-js'
 
 import PhysicsPlayer from './PhysicsPlayer'
-import PhysicsRay from './PhysicsRay'
+import PhysicsRay from '../PhysicsRay'
 
-import * as params from '../params'
+import * as params from '../../params'
 
 export default class PhysicsChunk {
-    constructor(visual, map) {
-        this.visual = visual
+    constructor(map, render) {
         this.map = map
+        this.render = render
         this.length = params.chunk.length
         this.width = params.chunk.width
 
-        this.engine = MATTER.Engine.create({'gravity': {'x': 0, 'y': 0}})
+        this.physicsEngine = MATTER.Engine.create({'gravity': {'x': 0, 'y': 0}})
         this.player = new PhysicsPlayer()
         ;({
             mountains: this.mountains,
@@ -66,7 +66,7 @@ export default class PhysicsChunk {
     }
 
     addBodies() {
-        MATTER.Composite.add(this.engine.world, [
+        MATTER.Composite.add(this.physicsEngine.world, [
             this.player.body,
             // Creation of the Top Wall
             MATTER.Bodies.rectangle(this.length / 2, this.width + 5, this.length, 10, { isStatic: true }),
@@ -79,8 +79,22 @@ export default class PhysicsChunk {
         ])
     }
 
+    removeBody(body) {
+        this.render.removeMesh({
+            'x': Math.trunc(body.position.x),
+            'y': Math.trunc(body.position.y)
+        })
+        body.id in this.woods ? delete this.woods[body.id] : null
+        body.id in this.stones ? delete this.stones[body.id] : null
+        MATTER.Composite.remove(this.physicsEngine.world, body)
+    }
+
     start() {
-        MATTER.Runner.run(this.runner, this.engine)
+        MATTER.Runner.run(this.runner, this.physicsEngine)
+    }
+
+    stop() {
+        MATTER.Runner.stop(this.runner)
     }
 
     update() {
@@ -88,21 +102,11 @@ export default class PhysicsChunk {
         this.ray.update()
     }
 
-    remove(body) {
-        this.visual.removeMesh({
-            'x': Math.trunc(body.position.x),
-            'y': Math.trunc(body.position.y)
-        })
-        body.id in this.woods ? delete this.woods[body.id] : null
-        body.id in this.stones ? delete this.stones[body.id] : null
-        MATTER.Composite.remove(this.engine.world, body)
-    }
-
     // For Debug
     createRender() {
         this.render = MATTER.Render.create({
             'element': document.body,
-            'engine': this.engine,
+            'engine': this.physicsEngine,
             bounds: {
                 min: { 
                     x: - (this.length / 2),

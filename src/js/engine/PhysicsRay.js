@@ -12,12 +12,18 @@ export default class PhysicsRay {
         this.countdown = null
     }
 
-    queryRay() {
+    queryRays() {
+        let target = this.queryRay([
+            ...Object.values(this.woods),
+            ...Object.values(this.stones)
+        ])
+        target ??= this.queryRay([])
+        return 
+    }
+
+    queryRay(bodies) {
         const collisions = MATTER.Query.ray(
-            [
-                ...Object.values(this.woods),
-                ...Object.values(this.stones)
-            ],
+            bodies,
             this.player.body.position,
             MATTER.Vector.add(
                 this.player.body.position,
@@ -34,7 +40,7 @@ export default class PhysicsRay {
             distance < toKeep[1] ? toKeep = [i, distance] : null
         })
         return collisions[toKeep[0]]
-    }s
+    }
 
     update() {
         const newTarget = this.queryRay()
@@ -50,7 +56,7 @@ export default class PhysicsRay {
         }
         if (isNewTarget || changedTarget) {
             this.timeout = setTimeout(() => {
-                this.phys.remove(this.target.body)
+                this.phys.removeBody(this.target.body)
                 this.woods = this.phys.woods
                 this.stones = this.phys.stones
             }, 1500)

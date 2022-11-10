@@ -14,9 +14,8 @@ export default class Player extends THREE.Mesh {
         this.raycaster = new PlayerRaycaster(this)
     }
 
-    update(position, rotation) {
-        this.position.set(position.x, position.y, 1)
-        this.rotation.set(0, 0, rotation)
-        this.raycaster.update()
+    update(coords) {
+        this.position.set(coords.position.x, coords.position.y, 1)
+        this.rotation.set(0, 0, coords.angle)
     }
 }
