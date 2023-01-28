@@ -12,9 +12,14 @@ const debug = {
     }
 }
 
+const camera = {
+    'height': 3,
+    'zoom': 0.1
+}
+
 const chunk = {
-    'length': 64,
-    'width': 24
+    'length': 32,
+    'width': 16
 }
 
 const plains = {
@@ -117,4 +122,4 @@ const physics = {
     }
 }
 
-export {debug, chunk, plains, ground, block, colors, physics}
+export {debug, camera, chunk, plains, ground, block, colors, physics}

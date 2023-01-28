@@ -22,7 +22,7 @@ export default class PhysicsChunk {
         } = this.createBodies())
         this.addBodies()
 
-        this.ray = new PhysicsRay(this, this.player, this.woods, this.stones)
+        this.ray = new PhysicsRay(this)
 
         if(params.debug.render.physics) {
             this.createRender()

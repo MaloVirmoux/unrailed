@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import * as params from '../../params'
-import { getArray } from '../../utils'
+import { getArray, mergeArrays } from '../../utils'
 
 import Ground from './Ground'
 import Block from './Block'
@@ -18,42 +18,15 @@ export default class Chunk extends THREE.Group {
         this.assets = assets
 
         this.ground = new Ground(this.map, this.depthMap)
-        ;({
-            array: this.ressourcesArray,
-            group: this.ressourcesGroup
-        } = this.createRessources())
-        this.add(this.ground, this.ressourcesGroup)
-    }
 
-    createRessources() {
-        const array = getArray()
-        const stones = new THREE.Group()
-        stones.name = 'StonesGroup'
-        const woods = new THREE.Group()
-        woods.name = 'WoodsGroup'
-        for (let x = 0; x < this.length; x++) {
-            for (let y = 0; y < this.width; y++) {
-                if (this.map[x][y] == 'stone' || this.map[x][y] == 'wood') {
-                    array[x][y] = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
-                    array[x][y].position.set(x, y, 0)
-                    switch (this.map[x][y]) {
-                        case 'stone':
-                            stones.add(array[x][y]) 
-                            break
-                        case 'wood':
-                            woods.add(array[x][y])
-                        break
-                    }
-                }
-            }
-        }
-        const group = new THREE.Group()
-        group.name = 'RessourcesGroup'
-        group.add(stones, woods)
-        return {
-            'array': array,
-            'group': group
-        }
+        this.modelsMap = getArray()
+        this.modelsGroup = new THREE.Group()
+        this.modelsGroup.name = 'ModelsGroup'
+        const blocks = this.createBlocks()
+        this.modelsMap = mergeArrays(this.modelsMap, blocks.map)
+        this.modelsGroup.add(blocks.group)
+
+        this.add(this.ground, this.modelsGroup)
     }
 
     getDepthMap () {
@@ -87,7 +60,39 @@ export default class Chunk extends THREE.Group {
         return depthMap
     }
 
+    createBlocks() {
+        const blocksMap = getArray()
+        const stones = new THREE.Group()
+        stones.name = 'StonesGroup'
+        const woods = new THREE.Group()
+        woods.name = 'WoodsGroup'
+        for (let x = 0; x < this.length; x++) {
+            for (let y = 0; y < this.width; y++) {
+                if (this.map[x][y] == 'stone' || this.map[x][y] == 'wood') {
+                    blocksMap[x][y] = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
+                    blocksMap[x][y].position.set(x, y, 0)
+                    switch (this.map[x][y]) {
+                        case 'stone':
+                            stones.add(blocksMap[x][y]) 
+                            break
+                        case 'wood':
+                            woods.add(blocksMap[x][y])
+                        break
+                    }
+                }
+            }
+        }
+        const blocksGroup = new THREE.Group()
+        blocksGroup.name = 'BlocksGroup'
+        blocksGroup.add(stones, woods)
+
+        return {
+            'map': blocksMap,
+            'group': blocksGroup
+        }
+    }
+
     removeMesh(position) {
-        this.ressourcesArray[position.x][position.y].removeFromParent()
+        this.modelsMap[position.x][position.y].removeFromParent()
     }
 }

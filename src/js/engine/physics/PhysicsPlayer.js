@@ -5,7 +5,7 @@ import * as params from '../../params'
 export default class PhysicsPlayer {
     constructor() {
         this.body = MATTER.Bodies.rectangle(0, 0, params.physics.hitbox.width, params.physics.hitbox.length, { friction: 0, frictionAir: 0, restitution: 0, inertia: 0 })
-        this.velocity = MATTER.Vector.create(0, 0)
+        this.velocity = MATTER.Vector.create()
         this.angle = MATTER.Vector.create(1, 0)
         this.createControls()
     }
@@ -17,6 +17,7 @@ export default class PhysicsPlayer {
             left: false,
             right: false
         }
+
         addEventListener('keydown', (event) => {
             // Start Up Movement
             if ((event.key == 'z' || event.key == 'Z') && !pressed.up) {
@@ -36,21 +37,22 @@ export default class PhysicsPlayer {
                 this.velocity = MATTER.Vector.add(this.velocity, MATTER.Vector.create(1, 0))
             }
         })
+
         addEventListener('keyup', (event) => {
             // End Up Movement
-                   if (event.key == 'z' || event.key == 'Z') {
+            if ((event.key == 'z' || event.key == 'Z') && pressed.up) {
                 pressed.up = false
                 this.velocity = MATTER.Vector.add(this.velocity, MATTER.Vector.create(0, -1))
             // End Down Movement
-            } else if (event.key == 's' || event.key == 'S') {
+            } else if ((event.key == 's' || event.key == 'S') && pressed.down) {
                 pressed.down = false
                 this.velocity = MATTER.Vector.add(this.velocity, MATTER.Vector.create(0, 1))
             // End Left Movement
-            } else if (event.key == 'q' || event.key == 'Q') {
+            } else if ((event.key == 'q' || event.key == 'Q') && pressed.left) {
                 pressed.left = false
                 this.velocity = MATTER.Vector.add(this.velocity, MATTER.Vector.create(1, 0))
             // End Right Movement
-            } else if (event.key == 'd' || event.key == 'D') {
+            } else if ((event.key == 'd' || event.key == 'D') && pressed.right) {
                 pressed.right = false
                 this.velocity = MATTER.Vector.add(this.velocity, MATTER.Vector.create(-1, 0))
             }

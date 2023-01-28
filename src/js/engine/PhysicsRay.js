@@ -3,22 +3,11 @@ import * as MATTER from 'matter-js'
 import * as params from '../params'
 
 export default class PhysicsRay {
-    constructor(phys, player, woods, stones) {
-        this.phys = phys
-        this.player = player
-        this.woods = woods
-        this.stones = stones
+    constructor(physChunk) {
+        this.physChunk = physChunk
+        this.player = physChunk.player
         this.target = false
         this.countdown = null
-    }
-
-    queryRays() {
-        let target = this.queryRay([
-            ...Object.values(this.woods),
-            ...Object.values(this.stones)
-        ])
-        target ??= this.queryRay([])
-        return 
     }
 
     queryRay(bodies) {
@@ -34,21 +23,30 @@ export default class PhysicsRay {
             ),
             params.physics.hitbox.width
         )
-        let toKeep = [-1, Infinity]
+        const toKeep = {
+            'body': null,
+            'distance': Infinity
+        }
         collisions.forEach((collision, i) => {
             const distance = MATTER.Vector.magnitude(MATTER.Vector.sub(this.player.body.position, collision.body.position))
-            distance < toKeep[1] ? toKeep = [i, distance] : null
+            if (distance < toKeep.distance){
+                toKeep.body = collision.bodyA
+                toKeep.distance = distance
+            }
         })
-        return collisions[toKeep[0]]
+        return toKeep.body
     }
 
     update() {
-        const newTarget = this.queryRay()
+        const newTarget = this.queryRay([
+            ...Object.values(this.physChunk.woods),
+            ...Object.values(this.physChunk.stones)
+        ])
 
         const isNewTarget = newTarget && !this.target
-        const changedTarget = newTarget && this.target && newTarget.body.id != this.target.body.id
+        const changedTarget = newTarget && this.target && newTarget.id != this.target.id
         const leftTarget = !newTarget && this.target
-        const noChange = (!newTarget && !this.target) || (newTarget && this.target && this.target.body.id == this.target.body.id)
+        const noChange = (!newTarget && !this.target) || (newTarget && this.target && this.target.id == this.target.id)
         
         if (isNewTarget || changedTarget || leftTarget) {
             clearTimeout(this.timeout)
@@ -56,9 +54,7 @@ export default class PhysicsRay {
         }
         if (isNewTarget || changedTarget) {
             this.timeout = setTimeout(() => {
-                this.phys.removeBody(this.target.body)
-                this.woods = this.phys.woods
-                this.stones = this.phys.stones
+                this.physChunk.removeBody(this.target)
             }, 1500)
         }
     }
