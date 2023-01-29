@@ -1,8 +1,10 @@
 import * as MATTER from 'matter-js'
 
+import Timer from './tools/Timer'
+
 import * as params from '../params'
 
-export default class PhysicsRay {
+export default class Ray {
     constructor(physChunk) {
         this.physChunk = physChunk
         this.player = physChunk.player
@@ -49,11 +51,13 @@ export default class PhysicsRay {
         const noChange = (!newTarget && !this.target) || (newTarget && this.target && this.target.id == this.target.id)
         
         if (isNewTarget || changedTarget || leftTarget) {
-            clearTimeout(this.timeout)
+            if(this.timer) {
+                this.timer.stop()
+            }
             this.target = newTarget
         }
         if (isNewTarget || changedTarget) {
-            this.timeout = setTimeout(() => {
+            this.timer = new Timer(() => {
                 this.physChunk.removeBody(this.target)
             }, 1500)
         }

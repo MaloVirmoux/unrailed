@@ -1,7 +1,7 @@
 import * as MATTER from 'matter-js'
 
 import PhysicsPlayer from './PhysicsPlayer'
-import PhysicsRay from '../PhysicsRay'
+import Ray from '../Ray'
 
 import * as params from '../../params'
 
@@ -22,7 +22,7 @@ export default class PhysicsChunk {
         } = this.createBodies())
         this.addBodies()
 
-        this.ray = new PhysicsRay(this)
+        this.ray = new Ray(this)
 
         if(params.debug.render.physics) {
             this.createRender()

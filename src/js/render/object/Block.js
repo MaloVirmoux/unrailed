@@ -33,11 +33,16 @@ export default class Block extends THREE.Group {
             }
         })()
         const modelName = params.block.files[this.type][this.size][Math.floor(Math.random() * params.block.files[this.type][this.size].length)]
-        
-        this.add(this.assets.models[this.type][this.size][modelName]['step_0'].clone())
+        const mesh = this.assets.models[this.type][this.size][modelName]['step_0'].clone()
+        this.add(mesh)
 
         if (params.debug.scene.wireframe) {
-            this.add(new Wireframe(this))
+            mesh.children.forEach((meshPart) => {
+                meshPart.material.polygonOffset = true
+                meshPart.material.polygonOffsetFactor = 1
+                meshPart.material.polygonOffsetUnits = 1
+                this.add(new Wireframe(meshPart))
+            })
         }
     }
 }
