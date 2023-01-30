@@ -7,15 +7,15 @@ import Ground from './Ground'
 import Block from './Block'
 
 export default class Chunk extends THREE.Group {
-    constructor(map, assets) {
+    constructor(map, physChunk) {
         super()
         this.name = 'Chunk'
         this.length = params.chunk.length
         this.width = params.chunk.width
 
         this.map = map
+        this.physChunk = physChunk
         this.depthMap = this.getDepthMap()
-        this.assets = assets
 
         this.ground = new Ground(this.map, this.depthMap)
 
@@ -69,7 +69,7 @@ export default class Chunk extends THREE.Group {
         for (let x = 0; x < this.length; x++) {
             for (let y = 0; y < this.width; y++) {
                 if (this.map[x][y] == 'stone' || this.map[x][y] == 'wood') {
-                    blocksMap[x][y] = new Block(this.assets, this.map[x][y], this.depthMap[x][y])
+                    blocksMap[x][y] = new Block(this.map[x][y], this.depthMap[x][y])
                     blocksMap[x][y].position.set(x, y, 0)
                     switch (this.map[x][y]) {
                         case 'stone':
@@ -87,12 +87,14 @@ export default class Chunk extends THREE.Group {
         blocksGroup.add(stones, woods)
 
         return {
-            'map': blocksMap,
-            'group': blocksGroup
+            map: blocksMap,
+            group: blocksGroup
         }
     }
 
-    removeMesh(position) {
-        this.modelsMap[position.x][position.y].removeFromParent()
+    update() {
+        this.physChunk.toRemove.forEach((toRemove) => {
+            this.modelsMap[toRemove.x][toRemove.y].removeFromParent()
+        })
     }
 }

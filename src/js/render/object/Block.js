@@ -1,14 +1,15 @@
 import * as THREE from 'three'
 
+import Wireframe from './Wireframe'
+import Assets from '../../Assets'
+
 import * as params from '../../params'
 
-import Wireframe from './Wireframe'
-
 export default class Block extends THREE.Group {
-    constructor(assets, type, depth) {
+    constructor(type, depth) {
         super()
         this.name = 'Block'
-        this.assets = assets
+        this.assets = new Assets()
         this.type = type
         this.size = (() => {
             const probability = params.block.probability[(() => {

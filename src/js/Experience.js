@@ -1,7 +1,6 @@
 import MapGenerator from './generator/MapGenerator'
 import Engine from './engine/Engine'
 import Render from './render/Render'
-import Assets from './Assets'
 
 export default class Experience {
     constructor(container) {
@@ -9,24 +8,19 @@ export default class Experience {
         this.mapGenerator = new MapGenerator()
         this.engine = new Engine()
         this.render = new Render(this.container, this.engine)
-        this.assets = new Assets(this)
-    }
-    
-    start() {
-        this.render.setAssets(this.assets)
         this.createNewChunk()
         this.tick()
     }
     
     createNewChunk() {
-        const map = this.mapGenerator.getNewMap()
-        const renderChunk = this.render.addChunk(map)
-        this.engine.addChunk(map, renderChunk)
+        const mapChunk = this.mapGenerator.getNewMap()
+        const physChunk = this.engine.addChunk(mapChunk)
+        const renderChunk = this.render.addChunk(mapChunk, physChunk)
     }
     
     tick() {
         this.engine.update()
-        this.render.render()
+        this.render.update()
         window.requestAnimationFrame(() => this.tick())
     }
 }

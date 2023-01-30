@@ -5,11 +5,14 @@ export default class Engine {
         this.activeChunks = [null, null]
     }
 
-    addChunk(map, renderChunk) {
-        this.activeChunks.unshift(new PhysicsChunk(map, renderChunk))
+    addChunk(map) {
+        this.activeChunks.unshift(new PhysicsChunk(map))
         this.activeChunks[0].start()
+        
         const oldChunk = this.activeChunks.pop()
         oldChunk ? oldChunk.stop() : null
+
+        return this.activeChunks[0]
     } 
 
     getPlayerCoords() {

@@ -6,9 +6,8 @@ import Ray from '../Ray'
 import * as params from '../../params'
 
 export default class PhysicsChunk {
-    constructor(map, render) {
+    constructor(map) {
         this.map = map
-        this.render = render
         this.length = params.chunk.length
         this.width = params.chunk.width
 
@@ -23,6 +22,7 @@ export default class PhysicsChunk {
         this.addBodies()
 
         this.ray = new Ray(this)
+        this.toRemove = []
 
         if(params.debug.render.physics) {
             this.createRender()
@@ -80,10 +80,11 @@ export default class PhysicsChunk {
     }
 
     removeBody(body) {
-        this.render.removeMesh({
-            'x': Math.trunc(body.position.x),
-            'y': Math.trunc(body.position.y)
+        this.toRemove.push({
+            x: Math.trunc(body.position.x),
+            y: Math.trunc(body.position.y)
         })
+
         body.id in this.woods ? delete this.woods[body.id] : null
         body.id in this.stones ? delete this.stones[body.id] : null
         MATTER.Composite.remove(this.physicsEngine.world, body)
@@ -104,9 +105,9 @@ export default class PhysicsChunk {
 
     // For Debug
     createRender() {
-        this.render = MATTER.Render.create({
-            'element': document.body,
-            'engine': this.physicsEngine,
+        this.debugRender = MATTER.Render.create({
+            element: document.body,
+            engine: this.physicsEngine,
             bounds: {
                 min: { 
                     x: - (this.length / 2),
@@ -124,6 +125,6 @@ export default class PhysicsChunk {
              },
             'pixelRatio': 10
         })
-        MATTER.Render.run(this.render)
+        MATTER.Render.run(this.debugRender)
     }
 }

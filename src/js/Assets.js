@@ -4,22 +4,25 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 import * as params from './params'
 
-export default class Assets {
-    constructor(e) {
-        this.manager = new THREE.LoadingManager(
-            () => {
-                e.start()
-            },
-            () => {}
-        )
+let instance = null
 
-        this.textureLoader = new THREE.TextureLoader(this.manager).setPath('./textures/')
-        this.gltfLoader = new GLTFLoader(this.manager).setPath('./models/')
-        
-        this.textures = {}
-        this.loadTextures()
-        this.models = {}
-        this.loadBlocks(params.block.files)
+export default class Assets {
+    constructor(start) {
+        if (!instance) {
+            instance = this
+            
+            this.manager = new THREE.LoadingManager(start)
+    
+            this.textureLoader = new THREE.TextureLoader(this.manager).setPath('./textures/')
+            this.gltfLoader = new GLTFLoader(this.manager).setPath('./models/')
+            
+            this.textures = {}
+            this.loadTextures()
+            this.models = {}
+            this.loadBlocks(params.block.files)
+        } else {
+            return instance
+        }
     }
 
     loadTextures() {
