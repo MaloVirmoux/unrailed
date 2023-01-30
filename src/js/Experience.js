@@ -1,15 +1,14 @@
 import MapGenerator from './generator/MapGenerator'
-import Render from './render/Render'
 import Engine from './engine/Engine'
-
+import Render from './render/Render'
 import Assets from './Assets'
 
 export default class Experience {
-    constructor() {
+    constructor(container) {
+        this.container = container
         this.mapGenerator = new MapGenerator()
         this.engine = new Engine()
-        this.render = new Render(this.engine)
-        
+        this.render = new Render(this.container, this.engine)
         this.assets = new Assets(this)
     }
     
@@ -27,7 +26,7 @@ export default class Experience {
     
     tick() {
         this.engine.update()
-        this.render.update()
+        this.render.render()
         window.requestAnimationFrame(() => this.tick())
     }
 }

@@ -37,11 +37,13 @@ export default class Block extends THREE.Group {
         this.add(mesh)
 
         if (params.debug.scene.wireframe) {
-            mesh.children.forEach((meshPart) => {
-                meshPart.material.polygonOffset = true
-                meshPart.material.polygonOffsetFactor = 1
-                meshPart.material.polygonOffsetUnits = 1
-                this.add(new Wireframe(meshPart))
+            mesh.traverse((meshPart) => {
+                if (meshPart instanceof THREE.Mesh) {
+                    meshPart.material.polygonOffset = true
+                    meshPart.material.polygonOffsetFactor = 1
+                    meshPart.material.polygonOffsetUnits = 1
+                    this.add(new Wireframe(meshPart))
+                }
             })
         }
     }

@@ -1,11 +1,15 @@
-export default class Size {
+import * as THREE from 'three'
+
+let instance = null
+
+export default class Size extends THREE.Vector2 {
     constructor() {
-        if (!this.instance) {
-            this.instance = this
+        if (!instance) {
+            instance = super()
             
             this.update()
         } else {
-            return this.instance
+            return instance
         }
     }
 

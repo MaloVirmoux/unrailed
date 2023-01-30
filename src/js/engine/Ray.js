@@ -59,7 +59,7 @@ export default class Ray {
         if (isNewTarget || changedTarget) {
             this.timer = new Timer(() => {
                 this.physChunk.removeBody(this.target)
-            }, 1500)
+            }, params.physics.efficiency)
         }
     }
 }

@@ -113,13 +113,22 @@ const colors = {
     }
 }
 
+const outline = {
+    'edgeStrength': 2,
+    'edgeGlow': 0,
+    'edgeThickness': 0.1,
+    'visibleEdgeColor': '#000000',
+    'hiddenEdgeColor ': '#ffffff'
+}
+
 const physics = {
     'speed': 0.2,
     'range': 3,
     'hitbox': {
         'length': 1,
         'width': 0.5
-    }
+    },
+    'efficiency': 500
 }
 
-export {debug, camera, chunk, plains, ground, block, colors, physics}
+export {debug, camera, chunk, plains, ground, block, colors, outline, physics}

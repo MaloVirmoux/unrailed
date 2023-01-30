@@ -40,8 +40,10 @@ export default class Assets {
                             `${type}/${size}/${file}/${step}.glb`,
                             (loaded) => {
                                 this.models[type][size][file][step] = loaded.scene.children[0]
-                                this.models[type][size][file][step].children.forEach((child) => {
-                                    child.material.color.convertLinearToSRGB()
+                                this.models[type][size][file][step].traverse((meshPart) => {
+                                    if (meshPart instanceof THREE.Mesh) {
+                                        meshPart.material.color.convertLinearToSRGB()
+                                    }
                                 })
                             }
                         )
