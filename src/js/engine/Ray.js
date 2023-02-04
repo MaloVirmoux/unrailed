@@ -18,9 +18,12 @@ export default class Ray {
             this.player.body.position,
             MATTER.Vector.add(
                 this.player.body.position,
-                MATTER.Vector.mult(
-                    this.player.angle,
-                    params.physics.range
+                MATTER.Vector.rotate(
+                    MATTER.Vector.create(
+                        params.physics.range,
+                        0
+                    ),
+                    this.player.current.angle
                 )
             ),
             params.physics.hitbox.width

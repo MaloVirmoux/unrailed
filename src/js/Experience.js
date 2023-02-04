@@ -1,3 +1,5 @@
+import * as TWEEN from '@tweenjs/tween.js'
+
 import MapGenerator from './generator/MapGenerator'
 import Engine from './engine/Engine'
 import Render from './render/Render'
@@ -19,6 +21,7 @@ export default class Experience {
     }
     
     tick() {
+        TWEEN.update()
         this.engine.update()
         this.render.update()
         window.requestAnimationFrame(() => this.tick())
