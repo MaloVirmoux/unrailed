@@ -40,7 +40,7 @@ export default class Chunk extends THREE.Group {
                 } else if (this.map[x + 1][y] != blocktype || this.map[x - 1][y] != blocktype || this.map[x][y + 1] != blocktype || this.map[x][y - 1] != blocktype) {
                     depthMap[x][y] = 0
                 } else {
-                    toCompute.push({'x': x, 'y': y})
+                    toCompute.push({x: x, y: y})
                 }
             }
         }

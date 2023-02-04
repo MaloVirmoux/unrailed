@@ -58,10 +58,20 @@ export default class Ground extends THREE.Mesh {
 
     static getVertices(blockType, fromX, toX, fromY, toY, fromZ, toZ) {
         const vertices = []
-        const position = fromX == toX ? 'side' : fromY == toY ? 'front' : fromZ == toZ ? 'top' : null
+        const position = (() => {
+            if (fromX == toX) return 'side'
+            if (fromY == toY) return 'front'
+            if (fromZ == toZ) return 'top'
+            return null
+        })()
         const vertice = {
-            'normal': position == 'side' ? [-1, 0, 0] : position == 'front' ? [0, -1, 0] : position == 'top' ? [1, 0, 0] : null,
-            'color': [
+            normal: (() => {
+                if (position == 'side') return [-1, 0, 0]
+                if (position == 'front') return [0, -1, 0]
+                if (position == 'top') return [1, 0, 0]
+                return null
+            })(),
+            color: [
                 params.colors[blockType][position][0] / 255,
                 params.colors[blockType][position][1] / 255,
                 params.colors[blockType][position][2] / 255 
@@ -70,32 +80,32 @@ export default class Ground extends THREE.Mesh {
         switch (position) {
             case 'top':
                 vertices.push(
-                    {'position': [fromX, fromY, fromZ], ...vertice},
-                    {'position': [toX  , fromY, fromZ], ...vertice},
-                    {'position': [toX  , toY  , fromZ], ...vertice},
-                    {'position': [fromX, fromY, fromZ], ...vertice},
-                    {'position': [toX  , toY  , fromZ], ...vertice},
-                    {'position': [fromX, toY  , fromZ], ...vertice}
+                    {position: [fromX, fromY, fromZ], ...vertice},
+                    {position: [toX  , fromY, fromZ], ...vertice},
+                    {position: [toX  , toY  , fromZ], ...vertice},
+                    {position: [fromX, fromY, fromZ], ...vertice},
+                    {position: [toX  , toY  , fromZ], ...vertice},
+                    {position: [fromX, toY  , fromZ], ...vertice}
                 )
                 break
             case 'side':
                 vertices.push(
-                    {'position': [fromX, fromY, fromZ], ...vertice},
-                    {'position': [fromX, fromY, toZ  ], ...vertice},
-                    {'position': [fromX, toY  , toZ  ], ...vertice},
-                    {'position': [fromX, fromY, fromZ], ...vertice},
-                    {'position': [fromX, toY  , toZ  ], ...vertice},
-                    {'position': [fromX, toY  , fromZ], ...vertice}
+                    {position: [fromX, fromY, fromZ], ...vertice},
+                    {position: [fromX, fromY, toZ  ], ...vertice},
+                    {position: [fromX, toY  , toZ  ], ...vertice},
+                    {position: [fromX, fromY, fromZ], ...vertice},
+                    {position: [fromX, toY  , toZ  ], ...vertice},
+                    {position: [fromX, toY  , fromZ], ...vertice}
                 )
                 break
             case 'front':
                 vertices.push(
-                    {'position': [fromX, fromY, fromZ], ...vertice},
-                    {'position': [toX  , fromY, fromZ], ...vertice},
-                    {'position': [fromX, fromY, toZ  ], ...vertice},
-                    {'position': [fromX, fromY, toZ  ], ...vertice},
-                    {'position': [toX  , fromY, fromZ], ...vertice},
-                    {'position': [toX  , fromY, toZ  ], ...vertice}
+                    {position: [fromX, fromY, fromZ], ...vertice},
+                    {position: [toX  , fromY, fromZ], ...vertice},
+                    {position: [fromX, fromY, toZ  ], ...vertice},
+                    {position: [fromX, fromY, toZ  ], ...vertice},
+                    {position: [toX  , fromY, fromZ], ...vertice},
+                    {position: [toX  , fromY, toZ  ], ...vertice}
                 )
                 break
             default:

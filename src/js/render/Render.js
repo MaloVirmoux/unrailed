@@ -47,7 +47,7 @@ export default class Render {
         this.scene.add(this.activeChunks[0])
 
         const oldChunk = this.activeChunks.pop()
-        oldChunk ? this.scene.remove(oldChunk) : null
+        if (oldChunk) this.scene.remove(oldChunk)
 
         return this.activeChunks[0]
     }
@@ -55,7 +55,7 @@ export default class Render {
     update() {
         this.player.update(this.engine.getPlayerCoords())
         this.activeChunks.forEach(chunk => {
-            chunk ? chunk.update() : null
+            if (chunk) chunk.update()
         })
         this.composer.render()
     }

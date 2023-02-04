@@ -7,7 +7,7 @@ export default class PathVerifier {
         this.toVisit = []
         this.visited = []
         let maxX = 0
-        this.toVisit.push({'x': 0, 'y': startY})
+        this.toVisit.push({x: 0, y: startY})
         
         while(maxX != map.length - 1 && this.toVisit.length != 0) {
             const v = this.toVisit.pop()
@@ -32,13 +32,13 @@ export default class PathVerifier {
 
     createNeighbours(currentX, currentY) {        
         // Behind Neighbour
-        currentX > 0 ? this.createTile({'x': currentX - 1, 'y': currentY}, 'unshift') : null
+        if (currentX > 0) this.createTile({x: currentX - 1, y: currentY}, 'unshift')
         // Right Neighbour
-        currentY < 31 ? this.createTile({'x': currentX, 'y': currentY + 1}, 'push') : null
+        if (currentY < 31) this.createTile({x: currentX, y: currentY + 1}, 'push')
         // Left Neighbour
-        currentY > 0 ? this.createTile({'x': currentX, 'y': currentY - 1}, 'push') : null
+        if (currentY > 0) this.createTile({x: currentX, y: currentY - 1}, 'push')
         // Front Neighbour
-        currentX < 127 ? this.createTile({'x': currentX + 1, 'y': currentY}, 'push') : null
+        if (currentX < 127) this.createTile({x: currentX + 1, y: currentY}, 'push')
     }
 
     createTile(tile, str) {

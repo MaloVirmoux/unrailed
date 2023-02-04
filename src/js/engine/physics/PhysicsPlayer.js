@@ -87,6 +87,7 @@ export default class PhysicsPlayer {
 
     update() {
         MATTER.Body.setVelocity(this.body, this.current.velocity)
+        // MATTER.Body.applyForce(this.body, this.body.position, this.current.velocity)
         MATTER.Body.setAngle(this.body, this.current.angle)
         MATTER.Body.setAngularVelocity(this.body, 0)
     }

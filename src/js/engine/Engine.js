@@ -10,21 +10,21 @@ export default class Engine {
         this.activeChunks[0].start()
         
         const oldChunk = this.activeChunks.pop()
-        oldChunk ? oldChunk.stop() : null
+        if (oldChunk) oldChunk.stop()
 
         return this.activeChunks[0]
     } 
 
     getPlayerCoords() {
         return {
-            'position': this.activeChunks[0].player.body.position,
-            'angle': this.activeChunks[0].player.body.angle
+            position: this.activeChunks[0].player.body.position,
+            angle: this.activeChunks[0].player.body.angle
         }
     }
 
     update() {
         this.activeChunks.forEach(chunk => {
-            chunk ? chunk.update() : null
+            if (chunk) chunk.update()
         })
     }
 }

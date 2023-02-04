@@ -29,8 +29,8 @@ export default class Ray {
             params.physics.hitbox.width
         )
         const toKeep = {
-            'body': null,
-            'distance': Infinity
+            body: null,
+            distance: Infinity
         }
         collisions.forEach((collision, i) => {
             const distance = MATTER.Vector.magnitude(MATTER.Vector.sub(this.player.body.position, collision.body.position))

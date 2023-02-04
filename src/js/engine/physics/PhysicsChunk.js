@@ -11,7 +11,7 @@ export default class PhysicsChunk {
         this.length = params.chunk.length
         this.width = params.chunk.width
 
-        this.physicsEngine = MATTER.Engine.create({'gravity': {'x': 0, 'y': 0}})
+        this.physicsEngine = MATTER.Engine.create({gravity: {x: 0, y: 0}})
         this.player = new PhysicsPlayer()
         ;({
             mountains: this.mountains,
@@ -38,7 +38,7 @@ export default class PhysicsChunk {
         const stones = {}
         for (let x = 0; x < this.length; x++) {
             for (let y = 0; y < this.width; y++) {
-                const body = MATTER.Bodies.rectangle(x + 0.5, y + 0.5, 1, 1, {'isStatic': true})
+                const body = MATTER.Bodies.rectangle(x + 0.5, y + 0.5, 1, 1, {isStatic: true})
                 switch (this.map[x][y]) {
                     case 'mountain':
                         mountains[body.id] = body
@@ -85,8 +85,8 @@ export default class PhysicsChunk {
             y: Math.trunc(body.position.y)
         })
 
-        body.id in this.woods ? delete this.woods[body.id] : null
-        body.id in this.stones ? delete this.stones[body.id] : null
+        if (body.id in this.woods) delete this.woods[body.id]
+        if (body.id in this.stones) delete this.stones[body.id]
         MATTER.Composite.remove(this.physicsEngine.world, body)
     }
 
@@ -123,7 +123,7 @@ export default class PhysicsChunk {
                  width: 1920,
                  height: (this.width / this.length) * 1920
              },
-            'pixelRatio': 10
+            pixelRatio: 10
         })
         MATTER.Render.run(this.debugRender)
     }
