@@ -8,8 +8,8 @@ export default class Ray {
     constructor(physChunk) {
         this.physChunk = physChunk
         this.player = physChunk.player
-        this.target = false
-        this.countdown = null
+        this.target
+        this.countdown
     }
 
     queryRay(bodies) {
@@ -51,18 +51,20 @@ export default class Ray {
         const isNewTarget = newTarget && !this.target
         const changedTarget = newTarget && this.target && newTarget.id != this.target.id
         const leftTarget = !newTarget && this.target
-        const noChange = (!newTarget && !this.target) || (newTarget && this.target && this.target.id == this.target.id)
+        const noChange = (!newTarget && !this.target) || (newTarget && this.target && newTarget.id == this.target.id)
         
-        if (isNewTarget || changedTarget || leftTarget) {
-            if(this.timer) {
-                this.timer.stop()
-            }
+        if (!noChange) {
+            if (this.timer) this.timer.stop()
+            if (this.target) this.physChunk.unOutlineBody(this.target)
             this.target = newTarget
-        }
-        if (isNewTarget || changedTarget) {
-            this.timer = new Timer(() => {
-                this.physChunk.removeBody(this.target)
-            }, params.physics.efficiency)
+
+            if (isNewTarget || changedTarget) {
+                this.physChunk.outlineBody(this.target)
+                this.timer = new Timer(() => {
+                    this.physChunk.unOutlineBody(this.target)
+                    this.physChunk.removeBody(this.target)
+                }, params.physics.efficiency)
+            }
         }
     }
 }

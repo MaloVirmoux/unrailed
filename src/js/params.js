@@ -117,7 +117,7 @@ const outline = {
     edgeStrength: 2,
     edgeGlow: 0,
     edgeThickness: 0.1,
-    visibleEdgeColor: '#000000',
+    visibleEdgeColor: '#ffffff',
     hiddenEdgeColor: '#ffffff'
 }
 

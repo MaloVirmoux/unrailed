@@ -27,6 +27,8 @@ export default class Chunk extends THREE.Group {
         this.modelsGroup.add(blocks.group)
 
         this.add(this.ground, this.modelsGroup)
+
+        this.outlined = []
     }
 
     getDepthMap () {
@@ -93,8 +95,22 @@ export default class Chunk extends THREE.Group {
     }
 
     update() {
-        this.physChunk.toRemove.forEach((toRemove) => {
-            this.modelsMap[toRemove.x][toRemove.y].removeFromParent()
-        })
+        for (const id in this.physChunk.toUnOutline) {
+            const coords = this.physChunk.toUnOutline[id]
+            this.outlined.splice(this.outlined.indexOf(this.modelsMap[coords.x][coords.y]), 1)
+            delete this.physChunk.toUnOutline[id]
+        }
+
+        for (const id in this.physChunk.toOutline) {
+            const coords = this.physChunk.toOutline[id]
+            this.outlined.push(this.modelsMap[coords.x][coords.y])
+            delete this.physChunk.toOutline[id]
+        }
+        
+        for (const id in this.physChunk.toRemove) {
+            const coords = this.physChunk.toRemove[id]
+            this.modelsMap[coords.x][coords.y].removeFromParent()
+            delete this.physChunk.toRemove[id]
+        }
     }
 }

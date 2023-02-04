@@ -22,7 +22,9 @@ export default class PhysicsChunk {
         this.addBodies()
 
         this.ray = new Ray(this)
-        this.toRemove = []
+        this.toOutline = {}
+        this.toUnOutline = {}
+        this.toRemove = {}
 
         if(params.debug.render.physics) {
             this.createRender()
@@ -79,11 +81,25 @@ export default class PhysicsChunk {
         ])
     }
 
-    removeBody(body) {
-        this.toRemove.push({
+    outlineBody(body) {
+        this.toOutline[body.id] = {
             x: Math.trunc(body.position.x),
             y: Math.trunc(body.position.y)
-        })
+        }
+    }
+
+    unOutlineBody(body) {
+        this.toUnOutline[body.id] = {
+            x: Math.trunc(body.position.x),
+            y: Math.trunc(body.position.y)
+        }
+    }
+
+    removeBody(body) {
+        this.toRemove[body.id] = {
+            x: Math.trunc(body.position.x),
+            y: Math.trunc(body.position.y)
+        }
 
         if (body.id in this.woods) delete this.woods[body.id]
         if (body.id in this.stones) delete this.stones[body.id]

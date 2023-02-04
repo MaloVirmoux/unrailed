@@ -25,8 +25,11 @@ export default class Render {
         this.composer = new Composer(this.size, this.renderer)
         this.renderPass = new RenderPass(this.scene, this.camera)
         this.composer.addPass(this.renderPass)
-        this.outlinePass = new OutlinePass(this.size, this.scene, this.camera, this.player)
-        this.composer.addPass(this.outlinePass)
+        this.playerOutlinePass = new OutlinePass(this.size, this.scene, this.camera, 'hidden')
+        this.playerOutlinePass.selectedObjects = [this.player]
+        this.composer.addPass(this.playerOutlinePass)
+        this.blockOutlinePass = new OutlinePass(this.size, this.scene, this.camera, 'both')
+        this.composer.addPass(this.blockOutlinePass)
 
         this.activeChunks = [null, null]
 
@@ -55,7 +58,11 @@ export default class Render {
     update() {
         this.player.update(this.engine.getPlayerCoords())
         this.activeChunks.forEach(chunk => {
-            if (chunk) chunk.update()
+            if (chunk) {
+                this.blockOutlinePass.selectedObjects = []
+                this.blockOutlinePass.selectedObjects.push(...chunk.outlined)
+                chunk.update()
+            }
         })
         this.composer.render()
     }
