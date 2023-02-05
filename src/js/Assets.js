@@ -30,9 +30,9 @@ export default class Assets {
     }
 
     loadBlocks(listFiles) {
-        for(let type in listFiles) {
+        for (let type in listFiles) {
             this.models[type] = {}
-            for(let size in listFiles[type]) {
+            for (let size in listFiles[type]) {
                 this.models[type][size] = {}
                 listFiles[type][size].forEach((file) => {
                     this.models[type][size][file] = {}

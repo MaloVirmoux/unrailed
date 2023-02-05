@@ -4,12 +4,11 @@ import Assets from './js/Assets'
 import Experience from './js/Experience'
 
 import * as params from './js/params'
+import Debug from './js/Debug'
 
 function start() {
     const container = document.querySelector('canvas.webgl')
-    if (params.debug.render.console || params.debug.render.physics) {
-        container.style.visibility = 'hidden'
-    }
+    Debug.container = container
     
     const e = new Experience(container)
 }

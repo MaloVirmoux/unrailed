@@ -1,4 +1,4 @@
-import PhysicsChunk from "./physics/PhysicsChunk"
+import PhysicsChunk from './physics/PhysicsChunk'
 
 export default class Engine {
     constructor() {

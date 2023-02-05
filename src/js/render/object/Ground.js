@@ -3,13 +3,11 @@ import * as THREE from 'three'
 import * as params from '../../params'
 
 export default class Ground extends THREE.Mesh {
-    constructor(map, depthMap) {
-        const length = params.chunk.length
-        const width = params.chunk.width
+    constructor(map) {
         let vertices = []
-        for (let x = 0; x < length; x++) {
-            for (let y = 0; y < width; y++) {
-                vertices = vertices.concat(Ground.createVertices(map, depthMap, x, y))
+        for (let x = 0; x < params.chunk.length; x++) {
+            for (let y = 0; y < params.chunk.width; y++) {
+                vertices = vertices.concat(Ground.createVertices(map, x, y))
             }
         }
         super(
@@ -20,9 +18,9 @@ export default class Ground extends THREE.Mesh {
         this.position.set(0, 0, - params.ground.height.standard)
     }
 
-    static createVertices(map, depthMap, x, y) {
+    static createVertices(map, x, y) {
         const vertices = []
-        const blockType = map[x][y]
+        const blockType = map[x][y]['type']
         const z = params.ground.height.standard - (blockType == 'water' ? params.ground.height.waterDifference : 0)
 
         // Creation of the Top faces Vertices
@@ -36,15 +34,15 @@ export default class Ground extends THREE.Mesh {
             vertices.push(...this.getVertices(blockType, x, x + 1, y, y, 0, z))
         }
         // Creation of the Right Water Sides Vertices
-        if (x != params.chunk.length - 1 && blockType == 'water' && map[x + 1][y] != 'water') {
-            vertices.push(...this.getVertices(map[x + 1][y], x + 1, x + 1, y, y + 1, z, params.ground.height.standard))
+        if (x != params.chunk.length - 1 && blockType == 'water' && map[x + 1][y]['type'] != 'water') {
+            vertices.push(...this.getVertices(map[x + 1][y]['type'], x + 1, x + 1, y, y + 1, z, params.ground.height.standard))
         }
         // Creation of the Back Water Sides Vertices
-        if (y != params.chunk.width - 1 && blockType == 'water' && map[x][y + 1] != 'water') {
-            vertices.push(...this.getVertices(map[x][y + 1], x, x + 1, y + 1, y + 1, z, params.ground.height.standard))
+        if (y != params.chunk.width - 1 && blockType == 'water' && map[x][y + 1]['type'] != 'water') {
+            vertices.push(...this.getVertices(map[x][y + 1]['type'], x, x + 1, y + 1, y + 1, z, params.ground.height.standard))
         }
         if (blockType == 'mountain') {
-            const mountainZ = params.ground.height.standard + Math.sqrt(depthMap[x][y] + Math.random())
+            const mountainZ = params.ground.height.standard + Math.sqrt(map[x][y]['depth'] + Math.random())
             // Creation of the Top Mountains Vertices
             vertices.push(...this.getVertices(blockType, x, x + 1, y, y + 1, mountainZ, mountainZ))
             // Creation of the Left Mountains Vertices
@@ -72,9 +70,9 @@ export default class Ground extends THREE.Mesh {
                 return null
             })(),
             color: [
-                params.colors[blockType][position][0] / 255,
-                params.colors[blockType][position][1] / 255,
-                params.colors[blockType][position][2] / 255 
+                params.groundColors[blockType][position][0] / 255,
+                params.groundColors[blockType][position][1] / 255,
+                params.groundColors[blockType][position][2] / 255 
             ]
         }
         switch (position) {

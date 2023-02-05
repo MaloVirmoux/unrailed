@@ -4,12 +4,12 @@ import PhysicsPlayer from './PhysicsPlayer'
 import Ray from '../Ray'
 
 import * as params from '../../params'
+import Debug from '../../Debug'
 
 export default class PhysicsChunk {
     constructor(map) {
         this.map = map
-        this.length = params.chunk.length
-        this.width = params.chunk.width
+        params.chunk.width = params.chunk.width
 
         this.physicsEngine = MATTER.Engine.create({gravity: {x: 0, y: 0}})
         this.player = new PhysicsPlayer()
@@ -26,9 +26,7 @@ export default class PhysicsChunk {
         this.toUnOutline = {}
         this.toRemove = {}
 
-        if(params.debug.render.physics) {
-            this.createRender()
-        }
+        if(params.debug.render.physics) Debug.createPhysicsRender(this.physicsEngine)
 
         this.runner = MATTER.Runner.create()
     }
@@ -38,10 +36,10 @@ export default class PhysicsChunk {
         const waters = {}
         const woods = {}
         const stones = {}
-        for (let x = 0; x < this.length; x++) {
-            for (let y = 0; y < this.width; y++) {
+        for (let x = 0; x < params.chunk.length; x++) {
+            for (let y = 0; y < params.chunk.width; y++) {
                 const body = MATTER.Bodies.rectangle(x + 0.5, y + 0.5, 1, 1, {isStatic: true})
-                switch (this.map[x][y]) {
+                switch (this.map[x][y]['type']) {
                     case 'mountain':
                         mountains[body.id] = body
                         break
@@ -71,9 +69,9 @@ export default class PhysicsChunk {
         MATTER.Composite.add(this.physicsEngine.world, [
             this.player.body,
             // Creation of the Top Wall
-            MATTER.Bodies.rectangle(this.length / 2, this.width + 5, this.length, 10, { isStatic: true }),
+            MATTER.Bodies.rectangle(params.chunk.length / 2, params.chunk.width + 5, params.chunk.length, 10, { isStatic: true }),
             // Creation of the Bottom Wall
-            MATTER.Bodies.rectangle(this.length / 2, - 5, this.length, 10, { isStatic: true }),
+            MATTER.Bodies.rectangle(params.chunk.length / 2, - 5, params.chunk.length, 10, { isStatic: true }),
             ...Object.values(this.mountains),
             ...Object.values(this.waters),
             ...Object.values(this.woods),
@@ -117,30 +115,5 @@ export default class PhysicsChunk {
     update() {
         this.player.update()
         this.ray.update()
-    }
-
-    // For Debug
-    createRender() {
-        this.debugRender = MATTER.Render.create({
-            element: document.body,
-            engine: this.physicsEngine,
-            bounds: {
-                min: { 
-                    x: - (this.length / 2),
-                    y: - (this.width / 2)
-                },
-                max: { 
-                    x: this.length + (this.length / 2),
-                    y: this.width + (this.width / 2)
-                }
-             },
-             options: {
-                 hasBounds: true,
-                 width: 1920,
-                 height: (this.width / this.length) * 1920
-             },
-            pixelRatio: 10
-        })
-        MATTER.Render.run(this.debugRender)
     }
 }

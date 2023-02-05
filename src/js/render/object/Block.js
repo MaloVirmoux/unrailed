@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 
-import Wireframe from './Wireframe'
 import Assets from '../../Assets'
 
 import * as params from '../../params'
+import Debug from '../../Debug'
 
 export default class Block extends THREE.Group {
     constructor(type, depth) {
@@ -37,15 +37,7 @@ export default class Block extends THREE.Group {
         const mesh = this.assets.models[this.type][this.size][modelName]['step_0'].clone()
         this.add(mesh)
 
-        if (params.debug.scene.wireframe) {
-            mesh.traverse((meshPart) => {
-                if (meshPart instanceof THREE.Mesh) {
-                    meshPart.material.polygonOffset = true
-                    meshPart.material.polygonOffsetFactor = 1
-                    meshPart.material.polygonOffsetUnits = 1
-                    this.add(new Wireframe(meshPart))
-                }
-            })
-        }
+
+        if (params.debug.scene.wireframe) Debug.addWireframe(this, mesh)
     }
 }

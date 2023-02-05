@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 
+import Debug from '../../Debug'
+
 import * as params from '../../params'
 
 export default class PlayerRaycaster extends THREE.Raycaster {
@@ -7,10 +9,7 @@ export default class PlayerRaycaster extends THREE.Raycaster {
         super(new THREE.Vector3(0, 0, 0.5), new THREE.Vector3(1, 0, 0))
         this.player = player
 
-        if (params.debug.player.raycaster) {
-            this.helper = new THREE.ArrowHelper(this.ray.direction, this.ray.origin, params.physics.range, 0xff0000)
-            this.player.add(this.helper)
-        }
+        if (params.debug.player.raycaster) Debug.addRaycasterHelper(this.player, this.ray)
     }
 
     update() {

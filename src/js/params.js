@@ -22,6 +22,10 @@ const chunk = {
     width: 16
 }
 
+const environment = {
+    skyColor: '#87ceeb'
+}
+
 const plains = {
     mountainGenerator: {
         frequency: 40,
@@ -85,7 +89,7 @@ const block = {
     }
 }
 
-const colors = {
+const groundColors = {
     mountain: {
         top: [27, 29, 34],      // #1b1d22
         front: [18, 19, 23],    // #121317
@@ -131,4 +135,15 @@ const physics = {
     efficiency: 500
 }
 
-export {debug, camera, chunk, plains, ground, block, colors, outline, physics}
+export {
+    debug,
+    camera,
+    chunk,
+    environment,
+    plains,
+    ground,
+    block,
+    groundColors,
+    outline,
+    physics
+}
