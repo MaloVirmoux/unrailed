@@ -2,7 +2,12 @@ import * as THREE from 'three'
 
 import * as params from '../../params'
 
+/** Class used to create the scene camera */
 export default class Camera extends THREE.OrthographicCamera {
+    /**
+     * Creates the camera
+     * @param {render.setup.CanvaSize} size Size of the canva
+     */
     constructor(size) {
         super(- size.ratio, size.ratio, 1, -1)
         this.position.set(params.chunk.length / 2, params.chunk.width / 2, params.camera.height)
@@ -15,6 +20,10 @@ export default class Camera extends THREE.OrthographicCamera {
         this.updateProjectionMatrix()
     }
 
+    /**
+     * Updates the camera
+     * @param {render.setup.CanvaSize} size Size of the canva
+     */
     update(size) {
         this.left = - size.ratio
         this.right = size.ratio

@@ -3,9 +3,11 @@ import * as TWEEN from '@tweenjs/tween.js'
 
 import * as params from '../../params'
 
+/** Class representing the physical player */
 export default class PhysicsPlayer {
+    /** Creates a physical player */
     constructor() {
-        this.body = MATTER.Bodies.rectangle(0, 0, params.physics.hitbox.width, params.physics.hitbox.length, { friction: 0, frictionAir: 0, restitution: 0, inertia: 0 })
+        this.body = MATTER.Bodies.rectangle(0, 0, params.physics.hitbox.width, params.physics.hitbox.length, { friction: 0, frictionAir: 0, restitution: 0, inertia: 0, chamfer: { radius: 0.25 } })
         this.direction = MATTER.Vector.create()
         this.angle = MATTER.Vector.create(1, 0)
         this.current = {
@@ -18,6 +20,7 @@ export default class PhysicsPlayer {
         this.createControls()
     }
 
+    /** Creates the event listeners to control the player */
     createControls() {
         const pressed = {
             up: false,
@@ -85,9 +88,9 @@ export default class PhysicsPlayer {
         })
     }
 
+    /** Updates the player velocity & angle */
     update() {
         MATTER.Body.setVelocity(this.body, this.current.velocity)
-        // MATTER.Body.applyForce(this.body, this.body.position, this.current.velocity)
         MATTER.Body.setAngle(this.body, this.current.angle)
         MATTER.Body.setAngularVelocity(this.body, 0)
     }

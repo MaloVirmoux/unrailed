@@ -1,12 +1,18 @@
 import * as THREE from 'three'
 
 import * as params from '../../params'
-import { getEmptyMap, mergeArrays } from '../../utils'
+import { getEmptyMap, mergeMaps } from '../../utils'
 
 import Ground from './Ground'
 import Block from './Block'
 
+/** Class used to create a displayed chunk */
 export default class Chunk extends THREE.Group {
+    /**
+     * Creates a chunk
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensional array of the map characteristics
+     * @param {engine.physics.PhysicsChunk} physChunk Physical representation of the chunk
+     */
     constructor(map, physChunk) {
         super()
         this.name = 'Chunk'
@@ -20,7 +26,7 @@ export default class Chunk extends THREE.Group {
         this.modelsGroup = new THREE.Group()
         this.modelsGroup.name = 'ModelsGroup'
         const blocks = this.createBlocks()
-        this.modelsMap = mergeArrays(this.modelsMap, blocks.map)
+        this.modelsMap = mergeMaps(this.modelsMap, blocks.map)
         this.modelsGroup.add(blocks.group)
 
         this.add(this.ground, this.modelsGroup)
@@ -28,6 +34,10 @@ export default class Chunk extends THREE.Group {
         this.outlined = []
     }
 
+    /**
+     * Creates the blocks in the chunk
+     * @returns {{map: render.object.Block[][], group: Group}} Array of the blocks, and displayed group of blocks
+     */
     createBlocks() {
         const blocksMap = getEmptyMap()
         const stones = new THREE.Group()
@@ -60,6 +70,7 @@ export default class Chunk extends THREE.Group {
         }
     }
 
+    /** Updates the displayed chunk */
     update() {
         for (const id in this.physChunk.toUnOutline) {
             const coords = this.physChunk.toUnOutline[id]

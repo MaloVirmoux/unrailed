@@ -6,7 +6,13 @@ import * as params from './params'
 
 let instance = null
 
+/** Class used to manage the assets */
 export default class Assets {
+    /**
+     * Loads the assets then starts the game
+     * @param {function} start 
+     * @returns 
+     */
     constructor(start) {
         if (!instance) {
             instance = this
@@ -25,10 +31,12 @@ export default class Assets {
         }
     }
 
+    /** Loads the textures */
     loadTextures() {
         return null
     }
 
+    /** Loads the models and sorts them */
     loadBlocks(listFiles) {
         for (let type in listFiles) {
             this.models[type] = {}

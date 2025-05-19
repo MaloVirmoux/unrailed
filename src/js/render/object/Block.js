@@ -5,31 +5,37 @@ import Assets from '../../Assets'
 import * as params from '../../params'
 import Debug from '../../Debug'
 
+/** Class used to create a displayed block */
 export default class Block extends THREE.Group {
+    /**
+     * Creates a block
+     * @param {string} type Type of the block
+     * @param {number} depth Depth of the block
+     */
     constructor(type, depth) {
         super()
         this.name = 'Block'
         this.assets = new Assets()
         this.type = type
         this.size = (() => {
-            const probability = params.block.probability[(() => {
+            const sizeSteps = params.block.sizeSteps[(() => {
                 switch (depth) {
                     case 0:
-                        return '0'
+                        return 'border'
                     case 1:
-                        return '1'
+                        return 'close'
                     case 2:
-                        return '2'            
+                        return 'medium'
                     default:
-                        return '3'
+                        return 'deep'
                 }
             })()]
             const random = Math.random()
-            if (random < probability.small) {
+            if (random < sizeSteps.small) {
                 return 'small'
-            } else if (random < probability.medium) {
+            } else if (random < sizeSteps.medium) {
                 return 'medium'
-            } else if (random < probability.big) {
+            } else if (random < sizeSteps.big) {
                 return 'big'
             }
         })()

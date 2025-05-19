@@ -4,15 +4,20 @@ import * as params from '../params'
 import { getEmptyMap } from '../utils'
 import Debug from '../Debug'
 
+/** Class used to generate the map */
 export default class MapGenerator {
+    /** Creates the map generator */
     constructor() {
         this.plainGenerator = new PlainGenerator()
         this.mapsList = []
     }
 
+    /**
+     * Creates a new map array with all its characteristics merged
+     * @returns {{type: string, distance:number, depth: number}[][]} Two dimensional array of characteristics
+     */
     getNewMap() {
         const layersMap = this.getLayersMap()
-        layersMap['depths'] = this.getDepthsMap(layersMap['types'])
 
         const map = getEmptyMap()
         for (let x = 0; x < params.chunk.length; x++) {
@@ -29,53 +34,71 @@ export default class MapGenerator {
         return map
     }
 
+    /**
+     * Creates a new map array with all its characteristics splitted
+     * @returns {{type: string[][], distance:number[][], depth: number[][]}} Dictionnary of two dimensional array of characteristics
+     */
     getLayersMap() {
-        const layersMap = {
+        let layersMap = {
             types: this.getTypesMap()
         }
+
         layersMap['distances'] = this.getDistancesMap(layersMap['types'], 7)
-        if (Math.min(layersMap['distances'][layersMap['distances'].length - 1]) == Infinity) {
+        if (Math.min(...layersMap['distances'][params.chunk.length - 1]) == Infinity) {
+            this.plainGenerator = new PlainGenerator()
             layersMap = this.getLayersMap()
         }
+
+        layersMap['depths'] = this.getDepthsMap(layersMap['types'])
+        
         return layersMap
     }
 
+    /**
+     * Generates a map array, each cell being a string with the type of block
+     * @returns {string[][]} Two dimensional array of types
+     */
     getTypesMap() {
         const typesMap = getEmptyMap()
 
         for (let x = 0; x < params.chunk.length; x++) {
             for (let y = 0; y < params.chunk.width; y++) {
-                typesMap[x][y] = this.plainGenerator.get(x, y)
+                // X and Y are offset of 1 to prevent issue with the noise in (x, 0) & (0, y)
+                typesMap[x][y] = this.plainGenerator.get(x + 1, y + 1)
             }
         }
 
         return typesMap
     }
 
-    getDistancesMap(map, y) {
+    /**
+     * Generates a map array, each cell being the distance from the starting point
+     * @returns {number[][]} Two dimensional array of distances
+     */
+    getDistancesMap(typesMap, startY) {
         const distancesMap = getEmptyMap()
         
         const next = []
-        if (map[0][y] != 'mountain') {
-            distancesMap[0][y] = 0
-            next.push({x:0, y:y})
+        if (typesMap[0][startY] != 'mountain') {
+            distancesMap[0][startY] = 0
+            next.push({x:0, y:startY})
         }
         while (next.length > 0) {
             const current = next.shift()
             const distance = distancesMap[current.x][current.y] + 1
-            if (current.x > 0 && map[current.x - 1][current.y] != 'mountain' && distancesMap[current.x - 1][current.y] == undefined) {
+            if (current.x > 0 && typesMap[current.x - 1][current.y] != 'mountain' && distancesMap[current.x - 1][current.y] == undefined) {
                 distancesMap[current.x - 1][current.y] = distance
                 next.push({x: current.x - 1, y: current.y})
             }
-            if (current.x < params.chunk.length - 1 && map[current.x + 1][current.y] != 'mountain' && distancesMap[current.x + 1][current.y] == undefined) {
+            if (current.x < params.chunk.length - 1 && typesMap[current.x + 1][current.y] != 'mountain' && distancesMap[current.x + 1][current.y] == undefined) {
                 distancesMap[current.x + 1][current.y] = distance
                 next.push({x: current.x + 1, y: current.y})
             }
-            if (current.y > 0 && map[current.x][current.y - 1] != 'mountain' && distancesMap[current.x][current.y - 1] == undefined) {
+            if (current.y > 0 && typesMap[current.x][current.y - 1] != 'mountain' && distancesMap[current.x][current.y - 1] == undefined) {
                 distancesMap[current.x][current.y - 1] = distance
                 next.push({x: current.x, y: current.y - 1})
             }
-            if (current.y < params.chunk.width - 1  && map[current.x][current.y + 1] != 'mountain' && distancesMap[current.x][current.y + 1] == undefined) {
+            if (current.y < params.chunk.width - 1  && typesMap[current.x][current.y + 1] != 'mountain' && distancesMap[current.x][current.y + 1] == undefined) {
                 distancesMap[current.x][current.y + 1] = distance
                 next.push({x: current.x, y: current.y + 1})
             }
@@ -86,15 +109,14 @@ export default class MapGenerator {
             }
             
         }
-        distancesMap.forEach(row => {
-            row.forEach(distance => {
-                if (distance == undefined) distance = Infinity
-            })
-        })
 
         return distancesMap
     }
 
+    /**
+     * Generates a map array, each cell being the depth in a type patch
+     * @returns {number[][]} Two dimensional array of depths
+     */
     getDepthsMap (typesMap) {
         const depthsMap = getEmptyMap()
 

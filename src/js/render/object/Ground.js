@@ -2,7 +2,12 @@ import * as THREE from 'three'
 
 import * as params from '../../params'
 
+/** Class representing a displayed ground */
 export default class Ground extends THREE.Mesh {
+    /**
+     * Creates a ground
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensional array of the map characteristics
+     */
     constructor(map) {
         let vertices = []
         for (let x = 0; x < params.chunk.length; x++) {
@@ -18,6 +23,13 @@ export default class Ground extends THREE.Mesh {
         this.position.set(0, 0, - params.ground.height.standard)
     }
 
+    /**
+     * Creates the vertices to build the ground
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensional array of the map characteristics
+     * @param {number} x X coordinates
+     * @param {number} y Y coordinates
+     * @returns {{position: number[], normal: number[], color: number[]}[]} Returns a list of vertices to create a ground's block
+     */
     static createVertices(map, x, y) {
         const vertices = []
         const blockType = map[x][y]['type']
@@ -54,6 +66,17 @@ export default class Ground extends THREE.Mesh {
         return vertices
     }
 
+    /**
+     * Get the vertices 
+     * @param {string} blockType Type of the block
+     * @param {number} fromX Lowest X coordinate
+     * @param {number} toX Highest X coordinate
+     * @param {number} fromY Lowest Y coordinate
+     * @param {number} toY Highest Y coordinate
+     * @param {number} fromZ Lowest Z coordinate
+     * @param {number} toZ Highest Z coordinate
+     * @returns {{position: number[], normal: number[], color: number[]}[]} Returns a list of vertices to create a face of a ground's block
+     */
     static getVertices(blockType, fromX, toX, fromY, toY, fromZ, toZ) {
         const vertices = []
         const position = (() => {
@@ -112,6 +135,11 @@ export default class Ground extends THREE.Mesh {
         return vertices
     }
 
+    /**
+     * Converts a list of vertices to a ground geometry
+     * @param {{position: number[], normal: number[], color: number[]}[]} vertices 
+     * @returns {THREE.BufferGeometry} Ground geometry
+     */
     static convertVerticestoGeometry(vertices) {
         const positions = []
         const normals = []

@@ -5,9 +5,14 @@ import Wireframe from './render/object/Wireframe'
 
 import * as params from './params'
 
+/** Class used to debug the game */
 export default class Debug {
     static container
 
+    /**
+     * Prints the map in the console
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensional array of the map characteristics 
+     */
     static printMap(map) {
         for (let y = 0; y < params.chunk.width; y++) {
             let text = ''
@@ -21,6 +26,10 @@ export default class Debug {
         }
     }
 
+    /**
+     * Displays the physic engine instead of the render
+     * @param {engine.Engine} physicsEngine Engine to be displayed
+     */
     static createPhysicsRender(physicsEngine) {
         this.container.style.visibility = 'hidden'
 
@@ -49,6 +58,10 @@ export default class Debug {
         }
     }
 
+    /**
+     * Displays the three dimensional axis of an object
+     * @param {THREE.Object3D} mesh Object to display the axis of 
+     */
     static addAxisHelpers(mesh) {
         const helper = new THREE.AxesHelper(100)
         helper.position.setZ(0.001)
@@ -67,6 +80,11 @@ export default class Debug {
         })
     }
 
+    /**
+     * Displays an arrow showing a raycaster
+     * @param {THREE.Object3D} mesh Object to add the arrow to
+     * @param {THREE.Ray} ray Ray to display 
+     */
     static addRaycasterHelper(mesh, ray) {
         const helper = new THREE.ArrowHelper(ray.direction, ray.origin, params.physics.range, 0xff0000)
         mesh.add(helper)

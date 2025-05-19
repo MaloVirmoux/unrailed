@@ -1,4 +1,4 @@
-import Size from './setup/Size'
+import CanvaSize from './setup/Size'
 import Scene from './setup/Scene'
 import Camera from './setup/Camera'
 import Player from './player/Player'
@@ -10,25 +10,31 @@ import Chunk from './object/Chunk'
 
 import * as params from '../params'
 
+/** Class used to create the render */
 export default class Render {
+    /**
+     * Creates the render
+     * @param {Element} container HTML Element to display the scene in
+     * @param {engine.Engine} engine Physical engine  
+     */
     constructor(container, engine) {
         this.container = container
         this.engine = engine
 
-        this.size  = new Size()
+        this.canvaSize  = new CanvaSize()
         this.scene = new Scene()
-        this.camera = new Camera(this.size)
+        this.camera = new Camera(this.canvaSize)
         this.player = new Player()
         this.scene.add(this.camera, this.player)
         
-        this.renderer = new Renderer(this.size, this.container)
-        this.composer = new Composer(this.size, this.renderer)
+        this.renderer = new Renderer(this.canvaSize, this.container)
+        this.composer = new Composer(this.canvaSize, this.renderer)
         this.renderPass = new RenderPass(this.scene, this.camera)
         this.composer.addPass(this.renderPass)
-        this.playerOutlinePass = new OutlinePass(this.size, this.scene, this.camera, 'hidden')
+        this.playerOutlinePass = new OutlinePass(this.canvaSize, this.scene, this.camera, 'hidden')
         this.playerOutlinePass.selectedObjects = [this.player]
         this.composer.addPass(this.playerOutlinePass)
-        this.blockOutlinePass = new OutlinePass(this.size, this.scene, this.camera, 'both')
+        this.blockOutlinePass = new OutlinePass(this.canvaSize, this.scene, this.camera, 'always')
         this.composer.addPass(this.blockOutlinePass)
 
         this.activeChunks = [null, null]
@@ -36,15 +42,22 @@ export default class Render {
         this.createListener()
     }
 
+    /** Creates the listeners to update the render */
     createListener(){
         window.addEventListener('resize', () => {
-            this.size.update()
-            this.camera.update(this.size)
-            this.renderer.update(this.size)
-            this.composer.update(this.size)
+            this.canvaSize.update()
+            this.camera.update(this.canvaSize)
+            this.renderer.update(this.canvaSize)
+            this.composer.update(this.canvaSize)
         })
     }
 
+    /**
+     * Adds a new chunk to the displayed render
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensional array of the map characteristics 
+     * @param {engine.physics.PhysicsChunk} physChunk Physical representation of the chunk
+     * @returns {render.object.Chunk} Body of the created chunk
+     */
     addChunk(map, physChunk) {
         this.activeChunks.unshift(new Chunk(map, physChunk))
         this.scene.add(this.activeChunks[0])
@@ -55,6 +68,7 @@ export default class Render {
         return this.activeChunks[0]
     }
 
+    /** Updates the render */
     update() {
         this.player.update(this.engine.getPlayerCoords())
         this.activeChunks.forEach(chunk => {

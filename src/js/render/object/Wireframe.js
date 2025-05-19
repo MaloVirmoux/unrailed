@@ -1,6 +1,11 @@
 import * as THREE from 'three'
 
+/** Class used to create a wireframe display */
 export default class Wireframe extends THREE.LineSegments {
+    /**
+     * Creates the wireframe texture
+     * @param {THREE.Mesh} obj Mesh of the body to create the wireframe of
+     */
     constructor(obj) {
         super(
             new THREE.EdgesGeometry(obj.geometry),

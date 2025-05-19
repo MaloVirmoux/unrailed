@@ -4,7 +4,12 @@ import Timer from './tools/Timer'
 
 import * as params from '../params'
 
+/** Class used to cast rays */
 export default class Ray {
+    /**
+     * Creates a ray
+     * @param {engine.physics.PhysicsChunk} physChunk Chunk in which the ray is acting
+     */
     constructor(physChunk) {
         this.physChunk = physChunk
         this.player = physChunk.player
@@ -12,6 +17,11 @@ export default class Ray {
         this.countdown
     }
 
+    /**
+     * Gets the body targetet by the player if it exists
+     * @param {MATTER.Body[]} bodies List of bodies to check the collision with 
+     * @returns {MATTER.Body|null} Body targeted by the player, if any 
+     */
     queryRay(bodies) {
         const collisions = MATTER.Query.ray(
             bodies,
@@ -42,6 +52,7 @@ export default class Ray {
         return toKeep.body
     }
 
+    /** Updates the ray */
     update() {
         const newTarget = this.queryRay([
             ...Object.values(this.physChunk.woods),

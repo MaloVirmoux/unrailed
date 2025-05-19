@@ -6,7 +6,12 @@ import Ray from '../Ray'
 import * as params from '../../params'
 import Debug from '../../Debug'
 
+/** Class representing the physical chunk */
 export default class PhysicsChunk {
+    /**
+     * Creates a physical chunk
+     * @param {{type: string, distance:number, depth: number}[][]} map Two dimensionnal array of strings describing the map
+     */
     constructor(map) {
         this.map = map
         params.chunk.width = params.chunk.width
@@ -31,6 +36,10 @@ export default class PhysicsChunk {
         this.runner = MATTER.Runner.create()
     }
 
+    /**
+     * Creates the physical bodies in the physical chunk 
+     * @returns {{mountains: {number: MATTER.Body}, waters: {number: MATTER.Body}, woods: {number: MATTER.Body}, stones: {number: MATTER.Body}}}
+     */
     createBodies() {
         const mountains = {}
         const waters = {}
@@ -65,6 +74,7 @@ export default class PhysicsChunk {
         }
     }
 
+    /** Adds the physical bodies to the physical world (player, walls, and blocks */
     addBodies() {
         MATTER.Composite.add(this.physicsEngine.world, [
             this.player.body,
@@ -79,6 +89,10 @@ export default class PhysicsChunk {
         ])
     }
 
+    /**
+     * Adds a body to the list of bodies to outline in the displayed world
+     * @param {MATTER.Body} body Body to outline
+     */
     outlineBody(body) {
         this.toOutline[body.id] = {
             x: Math.trunc(body.position.x),
@@ -86,6 +100,10 @@ export default class PhysicsChunk {
         }
     }
 
+    /**
+     * Removes a body from the list of bodies to outline in the displayed world
+     * @param {MATTER.Body} body Body to unoutline
+     */
     unOutlineBody(body) {
         this.toUnOutline[body.id] = {
             x: Math.trunc(body.position.x),
@@ -93,6 +111,10 @@ export default class PhysicsChunk {
         }
     }
 
+    /**
+     * Removes a body from the physical world, adds it to the list of bodies to remove from the displayed world
+     * @param {MATTER.Body} body Body to remove
+     */
     removeBody(body) {
         this.toRemove[body.id] = {
             x: Math.trunc(body.position.x),
@@ -104,14 +126,17 @@ export default class PhysicsChunk {
         MATTER.Composite.remove(this.physicsEngine.world, body)
     }
 
+    /** Starts to run the physical world */
     start() {
         MATTER.Runner.run(this.runner, this.physicsEngine)
     }
 
+    /** Stops to run the physical world */
     stop() {
         MATTER.Runner.stop(this.runner)
     }
 
+    /** Updates the physical world */
     update() {
         this.player.update()
         this.ray.update()
