@@ -39,12 +39,12 @@ export default class Debug {
                 engine: physicsEngine,
                 bounds: {
                     min: { 
-                        x: - (params.chunk.length / 2),
-                        y: - (params.chunk.width / 2)
+                        x: - (params.chunk.length / 2) * params.physics.scale,
+                        y: - (params.chunk.width / 2) * params.physics.scale
                     },
                     max: { 
-                        x: params.chunk.length + (params.chunk.length / 2),
-                        y: params.chunk.width + (params.chunk.width / 2)
+                        x: (params.chunk.length + (params.chunk.length / 2)) * params.physics.scale,
+                        y: (params.chunk.width + (params.chunk.width / 2)) * params.physics.scale
                     }
                 },
                 options: {

@@ -54,10 +54,7 @@ export default class Ray {
 
     /** Updates the ray */
     update() {
-        const newTarget = this.queryRay([
-            ...Object.values(this.physChunk.woods),
-            ...Object.values(this.physChunk.stones)
-        ])
+        const newTarget = this.queryRay(this.physChunk.bodies)
 
         const isNewTarget = newTarget && !this.target
         const changedTarget = newTarget && this.target && newTarget.id != this.target.id

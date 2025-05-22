@@ -44,6 +44,7 @@ export default class MapGenerator {
         }
 
         layersMap['distances'] = this.getDistancesMap(layersMap['types'], 7)
+        /** TODO : Improve to shrink mountains and rerun lake, river, & ressources instead */
         if (Math.min(...layersMap['distances'][params.chunk.length - 1]) == Infinity) {
             this.plainGenerator = new PlainGenerator()
             layersMap = this.getLayersMap()
