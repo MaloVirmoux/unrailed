@@ -47,7 +47,7 @@ export default class PhysicsChunk {
         const stones = {}
         for (let x = 0; x < params.chunk.length; x++) {
             for (let y = 0; y < params.chunk.width; y++) {
-                const body = MATTER.Bodies.rectangle(x + 0.5, y + 0.5, 1, 1, {isStatic: true})
+                const body = MATTER.Bodies.rectangle((x + 0.5) * params.physics.scale, (y + 0.5)  * params.physics.scale, params.physics.scale, params.physics.scale, {isStatic: true})
                 switch (this.map[x][y]['type']) {
                     case 'mountain':
                         mountains[body.id] = body
@@ -79,9 +79,9 @@ export default class PhysicsChunk {
         MATTER.Composite.add(this.physicsEngine.world, [
             this.player.body,
             // Creation of the Top Wall
-            MATTER.Bodies.rectangle(params.chunk.length / 2, params.chunk.width + 5, params.chunk.length, 10, { isStatic: true }),
+            MATTER.Bodies.rectangle((params.chunk.length * params.physics.scale) / 2, (params.chunk.width * params.physics.scale) + 50, (params.chunk.length * params.physics.scale), 100, { isStatic: true }),
             // Creation of the Bottom Wall
-            MATTER.Bodies.rectangle(params.chunk.length / 2, - 5, params.chunk.length, 10, { isStatic: true }),
+            MATTER.Bodies.rectangle((params.chunk.length * params.physics.scale) / 2, - 50, (params.chunk.length * params.physics.scale), 100, { isStatic: true }),
             ...Object.values(this.mountains),
             ...Object.values(this.waters),
             ...Object.values(this.woods),
@@ -95,8 +95,8 @@ export default class PhysicsChunk {
      */
     outlineBody(body) {
         this.toOutline[body.id] = {
-            x: Math.trunc(body.position.x),
-            y: Math.trunc(body.position.y)
+            x: Math.trunc(body.position.x / params.physics.scale),
+            y: Math.trunc(body.position.y / params.physics.scale)
         }
     }
 
@@ -106,8 +106,8 @@ export default class PhysicsChunk {
      */
     unOutlineBody(body) {
         this.toUnOutline[body.id] = {
-            x: Math.trunc(body.position.x),
-            y: Math.trunc(body.position.y)
+            x: Math.trunc(body.position.x / params.physics.scale),
+            y: Math.trunc(body.position.y / params.physics.scale)
         }
     }
 
@@ -117,8 +117,8 @@ export default class PhysicsChunk {
      */
     removeBody(body) {
         this.toRemove[body.id] = {
-            x: Math.trunc(body.position.x),
-            y: Math.trunc(body.position.y)
+            x: Math.trunc(body.position.x / params.physics.scale),
+            y: Math.trunc(body.position.y / params.physics.scale)
         }
 
         if (body.id in this.woods) delete this.woods[body.id]

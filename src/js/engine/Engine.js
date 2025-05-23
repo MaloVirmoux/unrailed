@@ -1,4 +1,8 @@
+import * as MATTER from 'matter-js'
+
 import PhysicsChunk from './physics/PhysicsChunk'
+
+import * as params from '../params'
 
 /** Class used to run the engine of the physical world */
 export default class Engine {
@@ -28,7 +32,7 @@ export default class Engine {
      */
     getPlayerCoords() {
         return {
-            position: this.activeChunks[0].player.body.position,
+            position: MATTER.Vector.mult(this.activeChunks[0].player.body.position, 1 / params.physics.scale),
             angle: this.activeChunks[0].player.body.angle
         }
     }

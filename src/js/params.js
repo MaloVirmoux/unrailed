@@ -126,6 +126,7 @@ const outline = {
 }
 
 const physics = {
+  scale: 20,
   speed: 0.2,
   range: 3,
   hitbox: {

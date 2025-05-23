@@ -30,13 +30,13 @@ export default class Ray {
                 this.player.body.position,
                 MATTER.Vector.rotate(
                     MATTER.Vector.create(
-                        params.physics.range,
+                        params.physics.range * params.physics.scale,
                         0
                     ),
                     this.player.current.angle
                 )
             ),
-            params.physics.hitbox.width
+            params.physics.hitbox.width * params.physics.scale
         )
         const toKeep = {
             body: null,
